@@ -14,7 +14,7 @@ On peut s'inscrire avec notre nom, mail et mot de passe et s'identifier avec le 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 3 RESSOURCES : 
-1. Utilisateurs (acheteur ou vendeur) => liés à leur annonces produits qu'ils vendents et/ou aux annonces produits qu'ils ont acheté
+1. Utilisateurs (acheteur ou vendeur) => liés à leur annonces produits qu'ils vendent et/ou aux annonces produits qu'ils ont acheté
 2. Annonce produit => liés au vendeur ET à l'acheteur
 3. Followers => Liés à des vendeurs (quand on aime beaucoup les habits d'un ou plusieurs vendeur) 
 
