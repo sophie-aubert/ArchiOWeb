@@ -1,5 +1,5 @@
-Application/node_modules/
-Application/package-lock.json
-Application/package.json
+/Application/node_modules/
+/Application/package-lock.json
+/Application/package.json
 
 
