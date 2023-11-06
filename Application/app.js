@@ -1,10 +1,12 @@
 import express from "express";
-//import mongoose from "mongoose";
 const app = express();
 const port = 3000;
 
-import mongoose from 'mongoose';
-mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/AppTheNiche');
+import mongoose from "mongoose";
+mongoose.connect(
+  process.env.DATABASE_URL ||
+    "mongodb+srv://admin:TheNiche1234@clustertheniche.dzl3a3c.mongodb.net/?retryWrites=true&w=majority"
+);
 
 // // Connexion à MongoDB avec Mongoose
 // mongoose.connect(
@@ -29,7 +31,6 @@ mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/AppTheNiche');
 // mongoose.connection.on("disconnected", () => {
 //   console.log("La connexion à MongoDB a été interrompue");
 // });
-
 
 app.use(express.json());
 
