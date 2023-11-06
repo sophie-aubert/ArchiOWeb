@@ -3,6 +3,9 @@ import express from "express";
 const app = express();
 const port = 3000;
 
+import mongoose from 'mongoose';
+mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost/AppTheNiche');
+
 // // Connexion à MongoDB avec Mongoose
 // mongoose.connect(
 //   "mongodb+srv://admin:TheNiche1234@clustertheniche.dzl3a3c.mongodb.net/AppTheNiche?retryWrites=true&w=majority",
@@ -26,6 +29,7 @@ const port = 3000;
 // mongoose.connection.on("disconnected", () => {
 //   console.log("La connexion à MongoDB a été interrompue");
 // });
+
 
 app.use(express.json());
 
