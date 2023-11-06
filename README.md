@@ -4,7 +4,7 @@ THEME DE TRAVAIL : Application "Vide Dressing Suisse"
 
 NOM : "The Niche"
 
-Ce qu'on utiliserait : L'appareil photo (pour les produits photos), la vibration (lorsqu'un vendeur qu'on suit met en ligne un nouveau produit), la géolocalitation pour la possibilité d'aller chercher les vêtements sur place.
+Ce qu'on utiliserait : L'appareil photo (pour les produits photos), la vibration (lorsqu'un vendeur met en ligne un nouveau produit), la géolocalitation pour la possibilité d'aller chercher les vêtements sur place.
 
 USER MANAGEMENT - On peut s'inscrire avec notre nom, mail et mot de passe et s'identifier avec le mail et mot de passe pour se connecter.
 
