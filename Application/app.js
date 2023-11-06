@@ -1,32 +1,39 @@
 import express from "express";
-const router = express();
+import mongoose from "mongoose";
+const app = express();
 const port = 3000;
 
-// const userRoutes = "./routes/usersRoutes";
-// const authRoutes = "./routes/authRoutes";
+// Connexion à MongoDB avec Mongoose
+mongoose.connect(
+  "mongodb+srv://admin:TheNiche1234@clustertheniche.dzl3a3c.mongodb.net/AppTheNiche?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
-// const app = express();
+// Gestion de la connexion réussie
+mongoose.connection.on("connected", () => {
+  console.log("Connexion à MongoDB établie avec succès");
+});
 
-// // Connexion à MongoDB avec Mongoose
-// // mongoose.connect(
-// //   "mongodb+srv://admin:TheNiche1234@clustertheniche.dzl3a3c.mongodb.net/AppTheNiche?retryWrites=true&w=majority",
-// //   {
-// //     useNewUrlParser: true,
-// //     useUnifiedTopology: true,
-// //   }
-// // );
+// Gestion des erreurs de connexion
+mongoose.connection.on("error", (err) => {
+  console.error("Erreur de connexion à MongoDB : " + err);
+});
 
-// app.use(express.json());
+// Gestion des déconnexions
+mongoose.connection.on("disconnected", () => {
+  console.log("La connexion à MongoDB a été interrompue");
+});
 
-// // Utilisation des routes
-// app.use("/users", userRoutes);
-// app.use("/auth", authRoutes);
+app.use(express.json());
 
-router.get("/", function (req, res, next) {
+app.get("/", function (req, res, next) {
   res.send("Bienvenue sur mon API REST !");
 });
 
-router.listen(port, () => {
+app.listen(port, () => {
   console.log(
     `Même les serveurs ont des oreilles ! Celui-là écoute sur le port ${port}`
   );
