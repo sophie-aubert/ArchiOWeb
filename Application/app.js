@@ -25,9 +25,9 @@ const port = 3000;
 
 // app.use(express.json());
 
-// app.get("/", function (req, res, next) {
-//   res.send("Bienvenue sur mon API REST !");
-// });
+app.get("/", function (req, res, next) {
+  res.send("Bienvenue sur mon API REST !");
+});
 
 app.listen(port, () => {
   console.log(
