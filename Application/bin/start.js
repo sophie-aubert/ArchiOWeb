@@ -8,7 +8,7 @@ import app from "../app.js";
 import createDebugger from "debug";
 import http from "http";
 
-const debug = createDebugger('application:server')
+const debug = createDebugger("application:server");
 /**
  * Get port from environment and store in Express.
  */
