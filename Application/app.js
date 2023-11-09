@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 const app = express();
-
 const port = 3000;
 dotenv.config();
 
@@ -30,7 +29,10 @@ app.use("/transactions", transactionsRoutes);
 /////////////////////////////////////////////////////////////////////////
 // BASE DE DONNEE
 /////////////////////////////////////////////////////////////////////////
-mongoose.connect(process.env.DATABASE_URL);
+mongoose.connect(process.env.DATABASE_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 // Gestion de la connexion réussie
 mongoose.connection.on("connected", () => {
   console.log("Connexion à MongoDB établie avec succès");
@@ -46,7 +48,7 @@ mongoose.connection.on("disconnected", () => {
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 
-app.get("/", function (req, res, next) {
+app.get("/", (req, res) => {
   res.json({ message: "Bienvenue sur mon API REST !" });
 });
 

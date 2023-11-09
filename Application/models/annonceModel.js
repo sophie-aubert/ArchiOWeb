@@ -1,4 +1,4 @@
-const mongoose = "mongoose";
+import mongoose from "mongoose";
 
 const annonceSchema = new mongoose.Schema(
   {
@@ -30,5 +30,5 @@ const annonceSchema = new mongoose.Schema(
 
 const Annonce = mongoose.model("Annonce", annonceSchema);
 
-// on exporte Annonce pour pouvoir l'utiliser dans d'autres fichiers
+// On exporte Annonce pour pouvoir l'utiliser dans d'autres fichiers
 export default Annonce;
