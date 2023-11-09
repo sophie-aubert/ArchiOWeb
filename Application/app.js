@@ -17,6 +17,16 @@ app.get("/annonces", (req, res) => {
   res.json({ message: "Liste des annonces" });
 });
 
+// lister les utilisateurs de la base de données
+app.get("/utilisateurs", async (req, res) => {
+  try {
+    const utilisateurs = await Utilisateur.find();
+    res.json(utilisateurs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //////////////////////APPEL DES ROUTES /////////////////////////////////
 
 // Importez les fichiers de routes
