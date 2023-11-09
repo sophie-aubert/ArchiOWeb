@@ -39,6 +39,8 @@ app.post("/utilisateurs", async (req, res) => {
   }
 });
 
+// supprimer un utilisateur de la base de données
+
 //////////////////////APPEL DES ROUTES /////////////////////////////////
 
 // Importez les fichiers de routes
