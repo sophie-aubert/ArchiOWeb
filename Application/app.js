@@ -9,6 +9,10 @@ dotenv.config();
 
 ///////////////////////////////////
 ///////// TEST ////////////////////
+app.get("/", (req, res) => {
+  res.json({ message: "Bienvenue sur mon API" });
+});
+
 app.get("/annonces", (req, res) => {
   res.json({ message: "Liste des annonces" });
 });
@@ -53,17 +57,18 @@ app.listen(port, async () => {
     `Même les serveurs ont des oreilles ! Celui-là écoute sur le port ${port}`
   );
 
-  try {
-    // Connexion réussie à MongoDB, vous pouvez maintenant ajouter l'utilisateur
-    const monUtilisateur = new Utilisateur({
-      username: "John Doe",
-      email: "john.doe@example",
-      password: "password",
-    });
+  // try {
+  //   // On ajoute un 2eme utilisateur
+  //   const monAutreUtilisateur = new Utilisateur({
+  //     username: "Jane Doe",
+  //     email: "jane.doe@example",
+  //     password: "password",
+  //   });
 
-    await monUtilisateur.save();
-    console.log("Utilisateur ajouté avec succès !");
-  } catch (error) {
-    console.error("Erreur lors de l'ajout de l'utilisateur : " + error);
-  }
+  //   await monAutreUtilisateur.save();
+
+  //   console.log("Utilisateur ajouté avec succès !");
+  // } catch (error) {
+  //   console.error("Erreur lors de l'ajout de l'utilisateur : " + error);
+  // }
 });
