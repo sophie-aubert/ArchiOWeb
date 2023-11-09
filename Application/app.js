@@ -56,9 +56,9 @@ app.listen(port, async () => {
   try {
     // Connexion réussie à MongoDB, vous pouvez maintenant ajouter l'utilisateur
     const monUtilisateur = new Utilisateur({
-      username: "John Doe",
-      email: "john.doe@example",
-      password: "password",
+      username: "test",
+      email: "test.1@example",
+      password: "test",
     });
 
     await monUtilisateur.save();
