@@ -1,5 +1,6 @@
 import express from "express";
 const router = express.Router();
+const app = express();
 
 // Importez les modèles nécessaires
 import Utilisateur from "../models/utilisateurModel.js";
