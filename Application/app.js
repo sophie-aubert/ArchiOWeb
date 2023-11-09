@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import Utilisateur from "./models/utilisateurModel.js";
 
 const app = express();
 const port = 3000;
@@ -24,7 +25,7 @@ app.use("/utilisateurs", utilisateursRoutes);
 app.use("/annonces", annoncesRoutes);
 app.use("/transactions", transactionsRoutes);
 
-//////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////
 // BASE DE DONNEE
@@ -45,15 +46,24 @@ mongoose.connection.on("error", (err) => {
 mongoose.connection.on("disconnected", () => {
   console.log("La connexion à MongoDB a été interrompue");
 });
-/////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////
 
-app.get("/", (req, res) => {
-  res.json({ message: "Bienvenue sur mon API REST !" });
-});
-
-app.listen(port, () => {
+//ajouter un utilisateur dans la base de données
+app.listen(port, async () => {
   console.log(
     `Même les serveurs ont des oreilles ! Celui-là écoute sur le port ${port}`
   );
+
+  try {
+    // Connexion réussie à MongoDB, vous pouvez maintenant ajouter l'utilisateur
+    const monUtilisateur = new Utilisateur({
+      username: "John Doe",
+      email: "john.doe@example",
+      password: "password",
+    });
+
+    await monUtilisateur.save();
+    console.log("Utilisateur ajouté avec succès !");
+  } catch (error) {
+    console.error("Erreur lors de l'ajout de l'utilisateur : " + error);
+  }
 });
