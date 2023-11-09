@@ -57,6 +57,7 @@ app.listen(port, async () => {
     `Même les serveurs ont des oreilles ! Celui-là écoute sur le port ${port}`
   );
 
+<<<<<<< HEAD
   // try {
   //   // On ajoute un 2eme utilisateur
   //   const monAutreUtilisateur = new Utilisateur({
@@ -64,6 +65,15 @@ app.listen(port, async () => {
   //     email: "jane.doe@example",
   //     password: "password",
   //   });
+=======
+  try {
+    // Connexion réussie à MongoDB, vous pouvez maintenant ajouter l'utilisateur
+    const monUtilisateur = new Utilisateur({
+      username: "test",
+      email: "test.1@example",
+      password: "test",
+    });
+>>>>>>> fa8a7032a3f04a7644821047b1ac19a6cdf6d7a2
 
   //   await monAutreUtilisateur.save();
 
