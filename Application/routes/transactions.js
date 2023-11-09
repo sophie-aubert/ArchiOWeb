@@ -1,12 +1,11 @@
 // transactions.js
 
-const express = require("express");
+const express = "express";
 const router = express.Router();
 
 // Importez les modèles nécessaires
-import Transaction from "./models/transactionModel";
-
-im;
+import Transaction from "../models/transactionModel.js";
+console.log(Transaction);
 
 // Définissez les routes pour la gestion des transactions
 

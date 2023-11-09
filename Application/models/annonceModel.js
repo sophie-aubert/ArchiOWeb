@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = "mongoose";
 
 const annonceSchema = new mongoose.Schema(
   {
@@ -30,4 +30,5 @@ const annonceSchema = new mongoose.Schema(
 
 const Annonce = mongoose.model("Annonce", annonceSchema);
 
-module.exports = Annonce;
+// on exporte Annonce pour pouvoir l'utiliser dans d'autres fichiers
+export default Annonce;
