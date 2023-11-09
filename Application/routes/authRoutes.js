@@ -1,7 +1,7 @@
 // authRoutes.js (Fichier de routes)
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user");
+const User = require("../models/utilisateurModel");
 
 // Route d'authentification
 router.post("/login", async (req, res) => {
