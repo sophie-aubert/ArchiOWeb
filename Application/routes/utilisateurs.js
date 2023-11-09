@@ -5,7 +5,7 @@ const router = express.Router();
 import Utilisateur from "../models/utilisateurModel.js";
 
 // Définissez une route POST pour la création d'un nouvel utilisateur
-router.post("/", async (req, res) => {
+router.post("/utilisateurs", async (req, res) => {
   try {
     // Récupérez les données de l'utilisateur à partir du corps de la requête
     const { username, email, password } = req.body;
