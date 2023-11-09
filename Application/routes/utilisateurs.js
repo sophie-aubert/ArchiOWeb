@@ -1,30 +1,11 @@
-// import express from "express";
-// const router = express.Router();
+// utilisateurs.js
 
-// router.get("/", function (req, res, next) {
-//   res.send("Got a response from the users route");
-// });
+const express = require("express");
+const router = express.Router();
 
-// export default router;
+// Importez les modèles nécessaires
+import Utilisateur from "../../models/utilisateurModel";
 
-const mongoose = require("mongoose");
+// Définissez les routes pour la gestion des utilisateurs
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-});
-
-const User = mongoose.model("User", userSchema);
-
-module.exports = User;
+export default router;

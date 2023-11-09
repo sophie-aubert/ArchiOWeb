@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const adSchema = new mongoose.Schema(
+const annonceSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -28,6 +28,6 @@ const adSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Ad = mongoose.model("Ad", adSchema);
+const Annonce = mongoose.model("Annonce", annonceSchema);
 
-module.exports = Ad;
+module.exports = Annonce;

@@ -3,15 +3,30 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 const app = express();
-///////////////////////////////////
-///////// TEST ////////////////////
-app.get("/annonces", (req, res) => {
-  res.send("Liste des annonces");
-});
-/////////////////////////////////////
 
 const port = 3000;
 dotenv.config();
+
+///////////////////////////////////
+///////// TEST ////////////////////
+app.get("/annonces", (req, res) => {
+  res.json({ message: "Liste des annonces" });
+});
+
+//////////////////////APPEL DES ROUTES /////////////////////////////////
+
+// Importez les fichiers de routes
+import utilisateursRoutes from "./routes/utilisateurs.js";
+import annoncesRoutes from "./routes/annonces.js";
+import transactionsRoutes from "./routes/transactions.js";
+
+// Utilisez les fichiers de routes dans votre application
+app.use("/utilisateurs", utilisateursRoutes);
+app.use("/annonces", annoncesRoutes);
+app.use("/transactions", transactionsRoutes);
+
+//////////////////////////////////////////////
+
 /////////////////////////////////////////////////////////////////////////
 // BASE DE DONNEE
 /////////////////////////////////////////////////////////////////////////
@@ -32,7 +47,7 @@ mongoose.connection.on("disconnected", () => {
 /////////////////////////////////////////////////////////////////////////
 
 app.get("/", function (req, res, next) {
-  res.send("Bienvenue sur mon API REST !");
+  res.json({ message: "Bienvenue sur mon API REST !" });
 });
 
 app.listen(port, () => {
