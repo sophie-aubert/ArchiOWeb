@@ -4,6 +4,16 @@ const router = express.Router();
 // Importez les modèles nécessaires
 import Utilisateur from "../models/utilisateurModel.js";
 
+// lister les utilisateurs de la base de données
+app.get("/utilisateurs", async (req, res) => {
+  try {
+    const utilisateurs = await Utilisateur.find();
+    res.json(utilisateurs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Définissez une route POST pour la création d'un nouvel utilisateur
 router.post("/utilisateurs", async (req, res) => {
   try {

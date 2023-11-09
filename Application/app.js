@@ -13,32 +13,6 @@ app.get("/", (req, res) => {
   res.json({ message: "Bienvenue sur mon API" });
 });
 
-// lister les utilisateurs de la base de données
-app.get("/utilisateurs", async (req, res) => {
-  try {
-    const utilisateurs = await Utilisateur.find();
-    res.json(utilisateurs);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// ajouter un utilisateur dans la base de données
-app.post("/utilisateurs", async (req, res) => {
-  try {
-    const utilisateur = new Utilisateur({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-    });
-
-    const newUtilisateur = await utilisateur.save();
-    res.status(201).json(newUtilisateur);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
 // supprimer un utilisateur de la base de données
 
 //////////////////////APPEL DES ROUTES /////////////////////////////////
