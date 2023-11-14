@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import Utilisateur from "./models/utilisateurModel.js";
+import utilisateursRoutes from "./routes/utilisateurs.js";
 
 const app = express();
 const port = 3000;
@@ -17,15 +17,8 @@ app.get("/", (req, res) => {
 
 //////////////////////APPEL DES ROUTES /////////////////////////////////
 
-// Importez les fichiers de routes
-import utilisateursRoutes from "./routes/utilisateurs.js";
-import annoncesRoutes from "./routes/annonces.js";
-import transactionsRoutes from "./routes/transactions.js";
-
 // Utilisez les fichiers de routes dans votre application
 app.use("/utilisateurs", utilisateursRoutes);
-app.use("/annonces", annoncesRoutes);
-app.use("/transactions", transactionsRoutes);
 
 /////////////////////////////////////////////////////////////////////////
 
@@ -54,19 +47,4 @@ app.listen(port, async () => {
   console.log(
     `Même les serveurs ont des oreilles ! Celui-là écoute sur le port ${port}`
   );
-
-  // try {
-  //   // On ajoute un 2eme utilisateur
-  //   const monAutreUtilisateur = new Utilisateur({
-  //     username: "Jane Doe",
-  //     email: "jane.doe@example",
-  //     password: "password",
-  //   });
-
-  //   await monAutreUtilisateur.save();
-
-  //   console.log("Utilisateur ajouté avec succès !");
-  // } catch (error) {
-  //   console.error("Erreur lors de l'ajout de l'utilisateur : " + error);
-  // }
 });
