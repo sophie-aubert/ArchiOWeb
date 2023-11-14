@@ -16,6 +16,7 @@ const utilisateurSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // Autres informations liées à l'utilisateur (adresse, préférences, etc.)
   },
   { timestamps: true }
 );
