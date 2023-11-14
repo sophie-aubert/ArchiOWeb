@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import Utilisateur from "./utilisateurModel.js";
-import Annonce from "./annonceModel.js";
 
 const transactionSchema = new mongoose.Schema(
   {
@@ -10,11 +8,11 @@ const transactionSchema = new mongoose.Schema(
     },
     buyer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Utilisateur",
+      ref: "User",
     },
     seller: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Utilisateur",
+      ref: "User",
     },
     status: {
       type: String,

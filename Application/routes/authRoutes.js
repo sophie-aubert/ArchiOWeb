@@ -1,34 +1,53 @@
-const express = require("express");
-const router = express.Router();
-const jwt = require("jsonwebtoken");
-const User = require("../models/utilisateurModel");
+import express from "express"; // N'oubliez pas d'importer express
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import Utilisateur from "../models/utilisateurModel.js";
 
-// Route d'authentification
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+const router = express.Router(); // Créez une instance de Router
 
+// Inscription d'un nouvel utilisateur
+router.post("/inscription", async (req, res) => {
   try {
-    const user = await User.findOne({ email });
+    console.log("Requête reçue avec le corps :", req.body);
 
-    if (!user || user.password !== password) {
-      return res
-        .status(401)
-        .json({ message: "Email or password is incorrect." });
+    const { username, email, password } = req.body;
+    console.log("Valeurs extraites :", username, email, password);
+
+    // Vérifiez si l'utilisateur existe déjà
+    const existingUser = await Utilisateur.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ message: "Cet utilisateur existe déjà" });
     }
 
-    // Génération du token JWT
+    // Hash du mot de passe
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Créez un nouvel utilisateur
+    const nouvelUtilisateur = new Utilisateur({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    // Sauvegardez l'utilisateur dans la base de données
+    await nouvelUtilisateur.save();
+
+    // Générez le token JWT
     const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      "secret_key",
+      { user: { id: nouvelUtilisateur._id } },
+      process.env.JWT_SECRET,
       {
-        expiresIn: "1h", // Optionnel : expire en 1 heure, ajuste selon tes besoins
+        expiresIn: "1h", // Vous pouvez ajuster la durée de validité du token
       }
     );
 
-    res.json({ token });
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(201).json({ token });
+  } catch (error) {
+    console.error("Erreur :", error);
+    res.status(500).json({ message: error.message });
   }
 });
 
-module.exports = router;
+// Exportez la fonction pour qu'elle puisse être utilisée dans d'autres fichiers
+export default router;

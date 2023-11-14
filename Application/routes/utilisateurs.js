@@ -1,9 +1,9 @@
-// utilisateur.js
 import express from "express";
-const router = express.Router();
-import Utilisateur from "../models/utilisateurModel.js";
+import authRoutes from "./authRoutes.js"; // Importez le fichier directement
 
-// Route pour lister tous les utilisateurs
+const router = express.Router();
+
+// Liste des utilisateurs
 router.get("/", async (req, res) => {
   try {
     const utilisateurs = await Utilisateur.find();
@@ -13,30 +13,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Route pour créer un nouvel utilisateur
-router.post("/", async (req, res) => {
-  try {
-    const existingUser = await Utilisateur.findOne({
-      username: req.body.username,
-    });
-
-    if (existingUser) {
-      return res.status(400).json({ message: "Nom d'utilisateur déjà pris." });
-    }
-
-    const nouvelUtilisateur = new Utilisateur({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password,
-    });
-
-    await nouvelUtilisateur.save();
-
-    res.status(201).json(nouvelUtilisateur);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
-  }
-});
+// Utilisez les routes d'authentification
+router.use("/auth", authRoutes);
 
 export default router;

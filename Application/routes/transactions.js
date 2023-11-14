@@ -1,69 +1,23 @@
+// transactions.js
 import express from "express";
+import Transaction from "../models/transactionModel.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+
 const router = express.Router();
 
-// Importez les modèles nécessaires
-import Transaction from "../models/transactionModel.js";
-
-// Route pour obtenir toutes les transactions
-router.get("/", async (req, res) => {
+// Exemple: Protégez une route avec le middleware d'authentification
+router.get("/transactions-protégées", authMiddleware, async (req, res) => {
   try {
-    const transactions = await Transaction.find();
+    // Votre logique pour récupérer les transactions protégées
+    // Vous pouvez utiliser req.user pour accéder aux informations de l'utilisateur authentifié
+
+    const transactions = await Transaction.find({ user: req.user._id });
     res.json(transactions);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 
-// Route pour obtenir une transaction spécifique par son ID
-router.get("/:id", async (req, res) => {
-  try {
-    const transaction = await Transaction.findById(req.params.id);
-    res.json(transaction);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// Route pour créer une nouvelle transaction
-router.post("/", async (req, res) => {
-  const transaction = new Transaction({
-    numeroAnnonce: req.body.numeroAnnonce,
-    buyer: req.body.buyer,
-    seller: req.body.seller,
-    status: req.body.status,
-    // Autres détails de la transaction...
-  });
-
-  try {
-    const nouvelleTransaction = await transaction.save();
-    res.status(201).json(nouvelleTransaction);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-// Route pour mettre à jour une transaction par son ID
-router.patch("/:id", async (req, res) => {
-  try {
-    const transaction = await Transaction.findById(req.params.id);
-    // Mettez à jour les champs nécessaires
-
-    const transactionMiseAJour = await transaction.save();
-    res.json(transactionMiseAJour);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// Route pour supprimer une transaction par son ID
-router.delete("/:id", async (req, res) => {
-  try {
-    const transaction = await Transaction.findById(req.params.id);
-    await transaction.remove();
-    res.json({ message: "Transaction supprimée avec succès!" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+// Autres routes liées aux transactions...
 
 export default router;

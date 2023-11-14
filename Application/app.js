@@ -1,11 +1,20 @@
+// Importez les fichiers de routes
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import Utilisateur from "./models/utilisateurModel.js";
 import utilisateursRoutes from "./routes/utilisateurs.js";
+import authRoutes from "./routes/authRoutes.js";
+import annoncesRoutes from "./routes/annonces.js";
+import transactionsRoutes from "./routes/transactions.js";
+
+dotenv.config();
 
 const app = express();
-const port = 3000;
-dotenv.config();
+const port = process.env.PORT || 3000; // Ajout de la déclaration de la variable port
+
+// Middleware pour permettre la gestion des données au format JSON
+app.use(express.json());
 
 ///////////////////////////////////
 ///////// TEST ////////////////////
@@ -13,12 +22,13 @@ app.get("/", (req, res) => {
   res.json({ message: "Bienvenue sur mon API" });
 });
 
-// supprimer un utilisateur de la base de données
-
 //////////////////////APPEL DES ROUTES /////////////////////////////////
 
 // Utilisez les fichiers de routes dans votre application
 app.use("/utilisateurs", utilisateursRoutes);
+app.use("/auth", authRoutes); // Utilisez un chemin approprié pour les routes d'authentification
+app.use("/annonces", annoncesRoutes);
+app.use("/transactions", transactionsRoutes);
 
 /////////////////////////////////////////////////////////////////////////
 

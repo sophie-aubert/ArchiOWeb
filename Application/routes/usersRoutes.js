@@ -1,20 +1,14 @@
+// usersRoutes.js (Fichier de routes)
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
-const Utilisateur = require("../models/utilisateurModel");
+const User = require("../models/user");
 
 // Route d'inscription
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // Hacher le mot de passe avant de le stocker dans la base de données
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await Utilisateur.create({
-      username,
-      email,
-      password: hashedPassword,
-    });
+    const user = await User.create({ username, email, password });
     res.status(201).json(user);
   } catch (err) {
     res.status(400).json({ message: err.message });
