@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import utilisateursRoutes from "./routes/utilisateurs.js";
 import authRoutes from "./routes/authRoutes.js";
 import annonces from "./routes/annonces.js";
+import transactions from "./routes/transactions.js";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use("/utilisateurs", utilisateursRoutes);
 app.use("/auth", authRoutes);
 app.use("/annonces", annonces);
+app.use("/transactions", transactions);
 
 /////////////////////////////////////////////////////////////////////////
 
