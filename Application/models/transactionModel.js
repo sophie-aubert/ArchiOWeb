@@ -1,25 +1,18 @@
+// transactionModel.js
 import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema(
   {
-    numeroAnnonce: {
+    annonce: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Numero",
+      ref: "Annonce", // Référence à votre modèle Annonce
+      required: true,
     },
-    buyer: {
+    acheteur: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Utilisateur", // Référence à votre modèle Utilisateur
+      required: true,
     },
-    seller: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    status: {
-      type: String,
-      enum: ["En attente", "En cours", "Terminée", "Annulée"],
-      default: "En attente",
-    },
-    // Autres détails de la transaction (méthode de paiement, date, etc.)
   },
   { timestamps: true }
 );

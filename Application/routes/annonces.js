@@ -1,16 +1,36 @@
 // annonces.js
 import express from "express";
 import Annonce from "../models/annonceModel.js";
-import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-// Exemple: Protégez une route avec le middleware d'authentification
-router.get("/annonces-protégées", authMiddleware, async (req, res) => {
-  // Votre logique pour récupérer les annonces protégées
-  // Vous pouvez utiliser req.user pour accéder aux informations de l'utilisateur authentifié
+router.get("/", async (req, res) => {
+  console.log("GET /annonces");
+  try {
+    const annonces = await Annonce.find().populate("utilisateur");
+    res.json(annonces);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
-// Autres routes liées aux annonces...
+router.post("/", async (req, res) => {
+  console.log("POST /annonces");
+  try {
+    const { titre, description, utilisateur } = req.body;
+
+    const nouvelleAnnonce = new Annonce({
+      titre,
+      description,
+      utilisateur,
+    });
+
+    const annonce = await nouvelleAnnonce.save();
+
+    res.status(201).json(annonce);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 export default router;
