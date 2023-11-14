@@ -56,7 +56,7 @@ app.post("/utilisateurs", async (req, res) => {
     const nouvelUtilisateur = new Utilisateur({
       username,
       email,
-      password: hashedPassword,
+      password,
     });
 
     // Sauvegardez l'utilisateur dans la base de données
