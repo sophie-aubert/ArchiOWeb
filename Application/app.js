@@ -46,9 +46,6 @@ app.get("/utilisateurs", async (req, res) => {
 // Route POST pour la création d'un nouvel utilisateur
 app.post("/utilisateurs", async (req, res) => {
   try {
-    // Hacher le mot de passe avant de le stocker dans la base de données
-    //const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
     // Créer un nouvel utilisateur
     const nouvelUtilisateur = await Utilisateur.create({
       username: req.body.username,
