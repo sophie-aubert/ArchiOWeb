@@ -1,6 +1,6 @@
-// authRoutes.js (Fichier de routes)
 const express = require("express");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 const User = require("../models/utilisateurModel");
 
 // Route d'authentification
@@ -16,13 +16,16 @@ router.post("/login", async (req, res) => {
         .json({ message: "Email or password is incorrect." });
     }
 
-    // Générer un token JWT et le renvoyer pour l'authentification
-    // (vous aurez besoin d'un package pour gérer cela, comme jsonwebtoken)
-    // Exemple :
-    // const token = generateJWTToken(user);
-    // res.json({ token });
+    // Génération du token JWT
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      "secret_key",
+      {
+        expiresIn: "1h", // Optionnel : expire en 1 heure, ajuste selon tes besoins
+      }
+    );
 
-    // Pour simplifier, vous devrez implémenter la génération de token JWT ici
+    res.json({ token });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
