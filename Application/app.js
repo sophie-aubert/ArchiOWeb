@@ -2,7 +2,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import utilisateursRoutes from "./routes/utilisateurs.js";
+import usersRoutes from "./routes/usersRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import annonces from "./routes/annonces.js";
 import transactions from "./routes/transactions.js";
@@ -18,7 +18,7 @@ app.use(express.json());
 //////////////////////APPEL DES ROUTES /////////////////////////////////
 
 // Utilisez les fichiers de routes dans votre application
-app.use("/utilisateurs", utilisateursRoutes);
+app.use("/affiche", usersRoutes);
 app.use("/auth", authRoutes);
 app.use("/annonces", annonces);
 app.use("/transactions", transactions);
