@@ -9,8 +9,7 @@ router.post("/register", async (req, res) => {
 
   try {
     // Hacher le mot de passe avant de le stocker dans la base de données
-    const hashedPassword = await bcrypt.hash(password, 10); // 10 est le coût du hachage, ajuste selon tes besoins
-
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await Utilisateur.create({
       username,
       email,
