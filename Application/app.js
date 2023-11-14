@@ -66,7 +66,7 @@ app.post("/utilisateurs", async (req, res) => {
     res.status(201).json(nouvelUtilisateur);
   } catch (error) {
     // En cas d'erreur, répondez avec un code de statut 500 Internal Server Error
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ Beeeeeug: error.message });
   }
 });
 
