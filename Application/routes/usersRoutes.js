@@ -1,14 +1,21 @@
-// usersRoutes.js (Fichier de routes)
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user");
+const bcrypt = require("bcrypt");
+const Utilisateur = require("../models/utilisateurModel");
 
 // Route d'inscription
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    const user = await User.create({ username, email, password });
+    // Hacher le mot de passe avant de le stocker dans la base de données
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 est le coût du hachage, ajuste selon tes besoins
+
+    const user = await Utilisateur.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
     res.status(201).json(user);
   } catch (err) {
     res.status(400).json({ message: err.message });

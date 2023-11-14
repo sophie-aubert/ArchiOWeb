@@ -1,18 +1,20 @@
 import mongoose from "mongoose";
+import Utilisateur from "./utilisateurModel.js";
+import Annonce from "./annonceModel.js";
 
 const transactionSchema = new mongoose.Schema(
   {
-    ad: {
+    numeroAnnonce: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Ad",
+      ref: "Numero",
     },
     buyer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Utilisateur",
     },
     seller: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Utilisateur",
     },
     status: {
       type: String,
