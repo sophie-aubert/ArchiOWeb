@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import Utilisateur from "./models/utilisateurModel.js";
 import utilisateursRoutes from "./routes/utilisateurs.js";
 import authRoutes from "./routes/authRoutes.js";
-import annoncesRoutes from "./routes/annonces.js";
+import annonces from "./routes/annonces.js";
 import transactionsRoutes from "./routes/transactions.js";
 
 dotenv.config();
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 // Utilisez les fichiers de routes dans votre application
 app.use("/utilisateurs", utilisateursRoutes);
 app.use("/auth", authRoutes); // Utilisez un chemin approprié pour les routes d'authentification
-app.use("/annonces", annoncesRoutes);
+app.use("/annonces", annonces);
 app.use("/transactions", transactionsRoutes);
 
 /////////////////////////////////////////////////////////////////////////
