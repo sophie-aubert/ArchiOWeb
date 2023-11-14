@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema(
   {
-    ad: {
+    numeroAnnonce: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Ad",
+      ref: "Numero",
     },
     buyer: {
       type: mongoose.Schema.Types.ObjectId,

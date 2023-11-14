@@ -1,26 +1,36 @@
 import mongoose from "mongoose";
+import Utilisateur from "./utilisateurModel.js";
 
 const annonceSchema = new mongoose.Schema(
   {
-    title: {
+    idAnnonce: {
       type: String,
       required: true,
     },
+
+    titre: {
+      type: String,
+      required: true,
+    },
+
     description: {
       type: String,
       required: true,
     },
-    price: {
+
+    prix: {
       type: Number,
       required: true,
     },
-    category: {
+
+    categorie: {
       type: String,
       // Vous pouvez utiliser une enum ou une référence à une autre collection pour les catégories
     },
-    user: {
+
+    utilisateur: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Utilisateur",
     },
     images: [String], // Liens vers les images de l'annonce
     // Autres détails de l'annonce (emplacement, état, etc.)
