@@ -4,32 +4,46 @@ import Annonce from "../models/annonceModel.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  console.log("GET /annonces");
-  try {
-    const annonces = await Annonce.find().populate("utilisateur");
-    res.json(annonces);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
+// Route pour la création d'une annonce
 router.post("/", async (req, res) => {
-  console.log("POST /annonces");
   try {
-    const { titre, description, utilisateur } = req.body;
+    const { titre, description, utilisateur, categorie, latitude, longitude } = req.body;
 
-    const nouvelleAnnonce = new Annonce({
+    const annonce = new Annonce({
       titre,
       description,
       utilisateur,
+      categorie,
+      latitude,
+      longitude,
     });
 
-    const annonce = await nouvelleAnnonce.save();
+    const newAnnonce = await annonce.save();
 
-    res.status(201).json(annonce);
+    res.status(201).json(newAnnonce);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Route pour la récupération de toutes les annonces avec filtre par catégorie
+router.get("/", async (req, res) => {
+  try {
+    const filters = {};
+
+    // Vérifie si la catégorie est spécifiée dans la requête
+    if (req.query.categorie) {
+      // Utilise une expression régulière insensible à la casse pour la comparaison
+      filters.categorie = { $regex: new RegExp(req.query.categorie, "i") };
+    }
+
+    const annonces = await Annonce.find(filters)
+      .populate("utilisateur")
+      .exec();
+
+    res.status(200).json(annonces);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
   }
 });
 
