@@ -1,7 +1,16 @@
 // annonceModel.js
 import mongoose from "mongoose";
 
-const categorieEnum = ["Chaussures", "Pantalons", "Chemises", "Pulls", "Vestes", "Manteaux", "Accessoires", "T-shirts"];
+const categorieEnum = [
+  "Chaussures",
+  "Pantalons",
+  "Chemises",
+  "Pulls",
+  "Vestes",
+  "Manteaux",
+  "Accessoires",
+  "T-shirts",
+];
 
 const annonceSchema = new mongoose.Schema(
   {
