@@ -26,9 +26,13 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Route pour la récupération de toutes les annonces avec filtre par catégorie
+// Route pour la récupération de toutes les annonces avec filtre par catégorie et pagination
 router.get("/", async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
     const filters = {};
 
     // Vérifie si la catégorie est spécifiée dans la requête
@@ -39,6 +43,8 @@ router.get("/", async (req, res) => {
 
     const annonces = await Annonce.find(filters)
       .populate("utilisateur")
+      .skip(skip)
+      .limit(limit)
       .exec();
 
     res.status(200).json(annonces);
