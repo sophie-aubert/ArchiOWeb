@@ -1,7 +1,16 @@
 // annonceModel.js
 import mongoose from "mongoose";
 
-const categorieEnum = ["Chaussures", "Pantalons", "Chemises", "Pulls", "Vestes", "Manteaux", "Accessoires", "T-shirts"];
+const categorieEnum = [
+  "Chaussures",
+  "Pantalons",
+  "Chemises",
+  "Pulls",
+  "Vestes",
+  "Manteaux",
+  "Accessoires",
+  "T-shirts",
+];
 
 const annonceSchema = new mongoose.Schema(
   {
@@ -18,28 +27,54 @@ const annonceSchema = new mongoose.Schema(
       ref: "Utilisateur",
       required: true,
     },
-    // Ajouter la catégorie de l'annonce en tant qu'enum
     categorie: {
       type: String,
       required: true,
       enum: categorieEnum,
     },
-    // Ajoutez les champs de géolocalisation
-    latitude: {
-      type: Number,
+    geolocation: {
+      type: {
+        type: String,
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+        validate: {
+          validator: validateGeoJsonCoordinates,
+          message:
+            "{VALUE} is not a valid longitude/latitude(/altitude) coordinates array",
+        },
+      },
     },
-    longitude: {
-      type: Number,
-    },
-    // Ajoutez le champ pour l'URL de l'image
     imageUrl: {
-      type: String,
+      type: Buffer,
       required: true,
     },
   },
   { timestamps: true }
 );
 
+annonceSchema.index({ geolocation: "2dsphere" });
+
 const Annonce = mongoose.model("Annonce", annonceSchema);
+
+function validateGeoJsonCoordinates(value) {
+  return (
+    Array.isArray(value) &&
+    value.length >= 2 &&
+    value.length <= 3 &&
+    isLongitude(value[0]) &&
+    isLatitude(value[1])
+  );
+}
+
+function isLatitude(value) {
+  return value >= -90 && value <= 90;
+}
+
+function isLongitude(value) {
+  return value >= -180 && value <= 180;
+}
 
 export default Annonce;

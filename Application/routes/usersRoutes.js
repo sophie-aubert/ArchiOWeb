@@ -1,5 +1,6 @@
 import express from "express";
 import Utilisateur from "../models/utilisateurModel.js";
+import Annonce from "../models/annonceModel.js";
 
 const router = express.Router();
 
@@ -77,6 +78,28 @@ router.delete("/:id", async (req, res) => {
     res.json({ message: "Utilisateur supprimé avec succès" });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+// Route pour obtenir le nombre d'annonces d'un utilisateur
+router.get("/:id/nombre-annonces", async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Vérifiez si l'utilisateur existe
+    const user = await Utilisateur.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    // Comptez le nombre d'annonces pour cet utilisateur
+    const nombreAnnonces = await Annonce.countDocuments({
+      utilisateur: userId,
+    });
+
+    res.status(200).json({ userId, nombreAnnonces });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

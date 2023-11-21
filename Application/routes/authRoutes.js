@@ -49,5 +49,33 @@ router.post("/inscription", async (req, res) => {
   }
 });
 
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Vérifiez si l'utilisateur existe
+    const user = await Utilisateur.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
+    // Vérifiez le mot de passe avec bcrypt
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Mot de passe incorrect" });
+    }
+
+    // Générez le token JWT
+    const token = jwt.sign({ user: { id: user._id } }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+
+    res.json({ token });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Exportez la fonction pour qu'elle puisse être utilisée dans d'autres fichiers
 export default router;

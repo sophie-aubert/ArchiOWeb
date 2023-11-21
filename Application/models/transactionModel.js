@@ -5,12 +5,17 @@ const transactionSchema = new mongoose.Schema(
   {
     annonce: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Annonce", // Référence à votre modèle Annonce
+      ref: "Annonce",
       required: true,
     },
     acheteur: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Utilisateur", // Référence à votre modèle Utilisateur
+      ref: "Utilisateur",
+      required: true,
+    },
+    vendeur: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Utilisateur",
       required: true,
     },
   },

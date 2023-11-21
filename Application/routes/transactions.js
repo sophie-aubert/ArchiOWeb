@@ -17,12 +17,13 @@ router.get("/", async (req, res) => {
 // Route pour créer une nouvelle transaction
 router.post("/", async (req, res) => {
   try {
-    const { annonce, acheteur } = req.body;
+    const { annonce, acheteur, vendeur } = req.body;
 
     // Créez une nouvelle transaction
     const nouvelleTransaction = new Transaction({
       annonce,
       acheteur,
+      vendeur,
     });
 
     // Sauvegardez la transaction dans la base de données

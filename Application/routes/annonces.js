@@ -1,16 +1,13 @@
-// annonces.js
 import express from "express";
+import multer from "multer";
 import Annonce from "../models/annonceModel.js";
 
 const router = express.Router();
 
-// Route pour la création d'une annonce avec gestion d'image via URL
+// Route pour la création d'une annonce avec gestion d'une URL externe
 router.post("/", async (req, res) => {
   try {
-    const { titre, description, utilisateur, categorie, latitude, longitude, imageUrl } = req.body;
-
-    // Créez une annonce avec l'URL de l'image
-    const annonce = new Annonce({
+    const {
       titre,
       description,
       utilisateur,
@@ -18,6 +15,32 @@ router.post("/", async (req, res) => {
       latitude,
       longitude,
       imageUrl,
+    } = req.body;
+
+    // Téléchargez l'image depuis l'URL externe
+    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
+
+    if (!response.data || response.data.length === 0) {
+      return res
+        .status(400)
+        .json({
+          message: "L'image n'a pas pu être téléchargée depuis l'URL externe.",
+        });
+    }
+
+    const imageBuffer = Buffer.from(response.data, "binary");
+
+    // Créez une annonce avec les coordonnées GeoJSON et l'image
+    const annonce = new Annonce({
+      titre,
+      description,
+      utilisateur,
+      categorie,
+      geolocation: {
+        type: "Point",
+        coordinates: [longitude, latitude],
+      },
+      imageUrl: imageUrl, // Modification ici pour utiliser l'URL de l'image
     });
 
     const newAnnonce = await annonce.save();
@@ -27,34 +50,5 @@ router.post("/", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
-
-// Route pour la récupération de toutes les annonces avec filtre par catégorie et pagination
-router.get("/", async (req, res) => {
-  try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page - 1) * limit;
-
-    const filters = {};
-
-    // Vérifie si la catégorie est spécifiée dans la requête
-    if (req.query.categorie) {
-      // Utilise une expression régulière insensible à la casse pour la comparaison
-      filters.categorie = { $regex: new RegExp(req.query.categorie, "i") };
-    }
-
-    const annonces = await Annonce.find(filters)
-      .populate("utilisateur")
-      .skip(skip)
-      .limit(limit)
-      .exec();
-
-    res.status(200).json(annonces);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-});
-
-// ... autres routes
 
 export default router;

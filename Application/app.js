@@ -17,6 +17,13 @@ app.use(express.json());
 
 //////////////////////APPEL DES ROUTES /////////////////////////////////
 
+// Route de bienvenue
+app.get("/", (req, res) => {
+  res.send(
+    "Bienvenue sur le vide dressing en ligne THE NICHE crée par : AUBERT SOPHIE, ESWARAN JASMINE, LOCATELLI MARCO ET PAPRACANIN FERIDA"
+  );
+});
+
 // Utilisez les fichiers de routes dans votre application
 app.use("/affiche", usersRoutes);
 app.use("/auth", authRoutes);
