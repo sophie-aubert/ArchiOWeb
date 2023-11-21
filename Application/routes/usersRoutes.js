@@ -35,6 +35,7 @@ router.post("/", async (req, res) => {
     // Votre logique de validation et de création d'utilisateur
 
     const newUser = new Utilisateur({ username, email, password });
+
     const savedUser = await newUser.save();
 
     res.status(201).json(savedUser);
