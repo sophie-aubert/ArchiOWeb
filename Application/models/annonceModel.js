@@ -31,6 +31,11 @@ const annonceSchema = new mongoose.Schema(
     longitude: {
       type: Number,
     },
+    // Ajoutez le champ pour l'URL de l'image
+    imageUrl: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
