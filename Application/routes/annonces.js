@@ -1,10 +1,12 @@
 // annonces.js
 import express from "express";
-import multer from "multer"; // Ajout de Multer
+import multer from "multer";
 import Annonce from "../models/annonceModel.js";
 import { broadcastMessage } from "../utils/messaging.js";
 
 const router = express.Router();
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 // Route qui liste toutes les annonces
 router.get("/", async (req, res) => {
@@ -16,28 +18,19 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Route pour annoncer un nouvel article
-router.post("/", function (req, res, next) {
-  // Do stuff...
-
-  // Notify users about the new announcement
-  broadcastMessage({ announcement: "New announcement posted!" });
-
-  res.status(200).json({ message: "Announcement posted successfully" });
-});
-
-// Configuration de Multer pour le stockage des images
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-// Route pour la création d'une annonce avec gestion d'image via Multer
+// Route pour annoncer un nouvel article avec ou sans image
 router.post("/", upload.single("image"), async (req, res) => {
   try {
-    const { titre, description, utilisateur, categorie, latitude, longitude } =
-      req.body;
+    const {
+      titre,
+      description,
+      utilisateur,
+      categorie,
+      latitude,
+      longitude,
+    } = req.body;
 
-    // Créez une annonce avec les coordonnées GeoJSON et l'image
-    const annonce = new Annonce({
+    const newAnnonce = new Annonce({
       titre,
       description,
       utilisateur,
@@ -46,12 +39,19 @@ router.post("/", upload.single("image"), async (req, res) => {
         type: "Point",
         coordinates: [longitude, latitude],
       },
-      image: req.file.buffer, // Stockez l'image dans le modèle comme un tampon de mémoire
     });
 
-    const newAnnonce = await annonce.save();
+    if (req.file) {
+      // Si une image est fournie, stockez-la dans le modèle comme un tampon de mémoire
+      newAnnonce.image = req.file.buffer;
+    }
 
-    res.status(201).json(newAnnonce);
+    const savedAnnonce = await newAnnonce.save();
+
+    // Notify users about the new announcement
+    broadcastMessage({ announcement: "New announcement posted!" });
+
+    res.status(201).json(savedAnnonce);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
