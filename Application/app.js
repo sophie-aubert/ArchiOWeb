@@ -14,10 +14,9 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-
-
 // Middleware pour permettre la gestion des données au format JSON
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //////////////////////APPEL DES ROUTES /////////////////////////////////
 
@@ -36,12 +35,10 @@ app.use("/transactions", transactions);
 
 /////////////////////////////////////////////////////////////////////////
 
-
 // Création du serveur websocket
 
 const server = http.createServer(app);
 createWebSocketServer(server);
-
 
 // BASE DE DONNEE
 mongoose

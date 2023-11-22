@@ -1,6 +1,7 @@
 import express from "express";
 import Utilisateur from "../models/utilisateurModel.js";
 import Annonce from "../models/annonceModel.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -44,39 +45,50 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Route pour mettre à jour un utilisateur par ID
-router.put("/:id", async (req, res) => {
+// ROUTE MISE A JOUR
+router.put("/:id", authMiddleware, async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const userId = req.params.id;
+    const requestingUserId = req.user.id;
+    if (req.user.isAdmin || userId === requestingUserId) {
+      const { username, email, password } = req.body;
 
-    // Votre logique de validation et de mise à jour d'utilisateur
+      const updatedUser = await Utilisateur.findByIdAndUpdate(
+        userId,
+        { username, email, password },
+        { new: true }
+      );
 
-    const updatedUser = await Utilisateur.findByIdAndUpdate(
-      req.params.id,
-      { username, email, password },
-      { new: true } // Pour retourner la version mise à jour de l'utilisateur
-    );
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "Utilisateur non trouvé" });
+      if (!updatedUser) {
+        return res.status(404).json({ message: "Utilisateur non trouvé" });
+      }
+      res.json(updatedUser);
+    } else {
+      res.status(403).json({ message: "Accès non autorisé" });
     }
-
-    res.json(updatedUser);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
-// Route pour supprimer un utilisateur par ID
-router.delete("/:id", async (req, res) => {
+// ROUTE SUPPRESSION
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
-    const deletedUser = await Utilisateur.findByIdAndDelete(req.params.id);
+    const userId = req.params.id;
+    const requestingUserId = req.user.id;
 
-    if (!deletedUser) {
-      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    // Vérifiez si l'utilisateur est l'administrateur ou l'utilisateur lui-même
+    if (req.user.isAdmin || userId === requestingUserId) {
+      const deletedUser = await Utilisateur.findByIdAndDelete(userId);
+
+      if (!deletedUser) {
+        return res.status(404).json({ message: "Utilisateur non trouvé" });
+      }
+
+      res.json({ message: "Utilisateur supprimé avec succès" });
+    } else {
+      res.status(403).json({ message: "Désolé ... Accès non autorisé" });
     }
-
-    res.json({ message: "Utilisateur supprimé avec succès" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
