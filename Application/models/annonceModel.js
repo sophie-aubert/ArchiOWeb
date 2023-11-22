@@ -47,8 +47,8 @@ const annonceSchema = new mongoose.Schema(
         },
       },
     },
-    imageUrl: {
-      type: Buffer,
+    image: {
+      type: Buffer, // Utilisation de Buffer pour stocker l'image
       required: true,
     },
   },

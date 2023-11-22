@@ -1,11 +1,16 @@
+// annonces.js
 import express from "express";
-import multer from "multer";
+import multer from "multer"; // Ajout de Multer
 import Annonce from "../models/annonceModel.js";
 
 const router = express.Router();
 
-// Route pour la création d'une annonce avec gestion d'une URL externe
-router.post("/", async (req, res) => {
+// Configuration de Multer pour le stockage des images
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+// Route pour la création d'une annonce avec gestion d'image via Multer
+router.post("/", upload.single("image"), async (req, res) => {
   try {
     const {
       titre,
@@ -14,21 +19,7 @@ router.post("/", async (req, res) => {
       categorie,
       latitude,
       longitude,
-      imageUrl,
     } = req.body;
-
-    // Téléchargez l'image depuis l'URL externe
-    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
-
-    if (!response.data || response.data.length === 0) {
-      return res
-        .status(400)
-        .json({
-          message: "L'image n'a pas pu être téléchargée depuis l'URL externe.",
-        });
-    }
-
-    const imageBuffer = Buffer.from(response.data, "binary");
 
     // Créez une annonce avec les coordonnées GeoJSON et l'image
     const annonce = new Annonce({
@@ -40,7 +31,7 @@ router.post("/", async (req, res) => {
         type: "Point",
         coordinates: [longitude, latitude],
       },
-      imageUrl: imageUrl, // Modification ici pour utiliser l'URL de l'image
+      image: req.file.buffer, // Stockez l'image dans le modèle comme un tampon de mémoire
     });
 
     const newAnnonce = await annonce.save();
@@ -50,5 +41,7 @@ router.post("/", async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
+
+// ... autres routes
 
 export default router;
