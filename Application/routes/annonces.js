@@ -2,8 +2,19 @@
 import express from "express";
 import multer from "multer"; // Ajout de Multer
 import Annonce from "../models/annonceModel.js";
+import { broadcastMessage } from "../utils/messaging.js";
 
 const router = express.Router();
+
+// Route pour annoncer un nouvel article
+router.post('/', function(req, res, next) {
+  // Do stuff...
+
+  // Notify users about the new announcement
+  broadcastMessage({ announcement: 'New announcement posted!' });
+
+  res.status(200).json({ message: 'Announcement posted successfully' });
+});
 
 // Configuration de Multer pour le stockage des images
 const storage = multer.memoryStorage();

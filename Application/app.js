@@ -6,11 +6,15 @@ import usersRoutes from "./routes/usersRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import annonces from "./routes/annonces.js";
 import transactions from "./routes/transactions.js";
+import { createWebSocketServer } from "./utils/messaging.js";
+import http from "http";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+
 
 // Middleware pour permettre la gestion des données au format JSON
 app.use(express.json());
@@ -31,6 +35,13 @@ app.use("/annonces", annonces);
 app.use("/transactions", transactions);
 
 /////////////////////////////////////////////////////////////////////////
+
+
+// Création du serveur websocket
+
+const server = http.createServer(app);
+createWebSocketServer(server);
+
 
 // BASE DE DONNEE
 mongoose
