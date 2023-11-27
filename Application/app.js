@@ -36,7 +36,6 @@ app.use("/transactions", transactions);
 /////////////////////////////////////////////////////////////////////////
 
 // Création du serveur websocket
-
 const server = http.createServer(app);
 createWebSocketServer(server);
 

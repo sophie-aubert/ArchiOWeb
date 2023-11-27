@@ -42,18 +42,27 @@ export function createWebSocketServer(httpServer) {
   });
 }
 
-export function broadcastMessage(message) {
+export function broadcastMessage(messageType, data) {
+  const structuredMessage = {
+    type: messageType,
+    data: data,
+  };
+
   debug(
-    `Broadcasting message to all connected clients: ${JSON.stringify(message)}`
+    `Broadcasting message to all connected clients: ${JSON.stringify(
+      structuredMessage
+    )}`
   );
+
   // You can easily iterate over the "clients" array to send a message to all
   // connected clients.
   clients.forEach((client) => {
-    client.send(JSON.stringify(message));
+    client.send(JSON.stringify(structuredMessage));
   });
 }
 
 function onMessageReceived(ws, message) {
   debug(`Received WebSocket message: ${JSON.stringify(message)}`);
+  console.log("WebSocket message received:", JSON.stringify(message));
   // Do something with the message...
 }
