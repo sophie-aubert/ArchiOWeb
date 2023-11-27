@@ -21,6 +21,10 @@ const annonceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    prix: {
+      type: Number,
+      required: true,
+    },
     utilisateur: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Utilisateur",
