@@ -15,10 +15,12 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Route pour récupérer un utilisateur par ID
-router.get("/:id", async (req, res) => {
+// Route pour récupérer un utilisateur par nom d'utilisateur
+
+router.get("/:username", async (req, res) => {
   try {
-    const user = await Utilisateur.findById(req.params.id);
+    const username = req.params.username;
+    const user = await Utilisateur.findOne({ username });
     if (!user) {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }

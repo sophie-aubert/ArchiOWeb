@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "DEBUG=express-api:messaging node app.js",
+    "start": "set DEBUG=express-api:messaging && node app.js",
     "wscat": "wscat",
     "test": "mocha tests/**/*.test.js"
   },
