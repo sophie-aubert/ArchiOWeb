@@ -19,7 +19,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //////////////////////APPEL DES ROUTES /////////////////////////////////
-
 // Route de bienvenue
 app.get("/", (req, res) => {
   res.send(
@@ -27,12 +26,10 @@ app.get("/", (req, res) => {
   );
 });
 
-// Utilisez les fichiers de routes dans votre application
-app.use("/affiche", usersRoutes);
+app.use("/utilisateurs", usersRoutes);
 app.use("/auth", authRoutes);
 app.use("/annonces", annonces);
 app.use("/transactions", transactions);
-
 /////////////////////////////////////////////////////////////////////////
 
 // Création du serveur websocket
@@ -48,7 +45,6 @@ mongoose
   .then(() => {
     console.log("Connexion à MongoDB établie avec succès");
 
-    //ajouter un utilisateur dans la base de données
     app.listen(port, () => {
       console.log(`Le serveur écoute sur le port ${port}`);
     });
@@ -57,7 +53,6 @@ mongoose
     console.error("Erreur de connexion à MongoDB : " + err);
   });
 
-// Gestion des erreurs non gérées
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");

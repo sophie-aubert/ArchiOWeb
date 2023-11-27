@@ -1,4 +1,3 @@
-// authAnnonceMiddleware.js
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import Annonce from "../models/annonceModel.js";

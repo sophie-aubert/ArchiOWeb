@@ -1,4 +1,3 @@
-// annonceModel.js
 import mongoose from "mongoose";
 
 const categorieEnum = [
