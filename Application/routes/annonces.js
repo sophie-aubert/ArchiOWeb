@@ -29,6 +29,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// *** NOUVEAU ***
+// ROUTE POUR LISTER LES ANNONCES D'UN UTILISATEUR
+// CONNEXION UTILISATEUR OU ADMIN
+router.get("/mesAnnonces/:id", authMiddleware, async (req, res) => {
+  try {
+    const annonces = await Annonce.find({
+      utilisateur: req.params.id,
+    });
+    res.json(annonces);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // ROUTE POUR CREER UNE ANNONCE
 // CONNEXION UTILISATEUR OU ADMIN
 router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
@@ -43,7 +57,7 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
       titre,
       description,
       prix,
-      utilisateur, // Utilisez l'ID de l'utilisateur
+      utilisateur,
       categorie,
       geolocation: {
         type: "Point",
