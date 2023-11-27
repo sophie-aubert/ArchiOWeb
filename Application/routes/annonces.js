@@ -41,7 +41,11 @@ router.post("/", upload.single("image"), async (req, res) => {
     }
 
     const savedAnnonce = await newAnnonce.save();
-    broadcastMessage({ announcement: "New announcement posted!" });
+
+    broadcastMessage("new_announcement", savedAnnonce);
+    broadcastMessage("illustrative_message", {
+      message: "This is an illustrative message.",
+    });
 
     res.status(201).json(savedAnnonce);
   } catch (error) {
@@ -64,8 +68,6 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
   try {
     const annonceId = req.params.id;
     const { titre, description, imageUrl } = req.body;
-
-    // Vérifiez si l'annonce existe
     const annonce = await Annonce.findById(annonceId);
     if (!annonce) {
       return res.status(404).json({ message: "Annonce non trouvée" });
@@ -73,7 +75,6 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
     annonce.titre = titre || annonce.titre;
     annonce.description = description || annonce.description;
     annonce.imageUrl = imageUrl || annonce.imageUrl;
-    // Sauvegardez les modifications
     const updatedAnnonce = await annonce.save();
     res.json(updatedAnnonce);
   } catch (err) {
@@ -81,23 +82,22 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
   }
 });
 
-// ROUTE SUPPRESSION ANNONCE
 router.delete("/:id", authAnnonceMiddleware, async (req, res) => {
   try {
     const annonceId = req.params.id;
+
     const annonce = await Annonce.findById(annonceId);
     if (!annonce) {
       return res.status(404).json({ message: "Annonce non trouvée" });
     }
+
     if (
       annonce.utilisateur.toString() !== req.user.id &&
       req.user.isAdmin === false
     ) {
       return res.status(403).json({ message: "Accès non autorisé" });
     }
-
     await Annonce.findByIdAndDelete(annonceId);
-
     res.json({ message: "Annonce supprimée avec succès" });
   } catch (err) {
     res.status(500).json({ message: err.message });
