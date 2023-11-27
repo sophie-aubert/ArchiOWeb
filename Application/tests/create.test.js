@@ -5,8 +5,8 @@ import { expect } from "chai";
 describe("Create Operation Tests", () => {
   it("should create a new object", async () => {
     const response = await supertest(app).post("/annonces").send({
-      titre: "Nouvelle Annonce TEST",
-      description: "Description de la nouvelle annonce",
+      titre: "Annonce TEST",
+      description: "Cette annonce à été créée pour les tests",
       utilisateur: "654cdf45e16f0cbe281f8652",
       categorie: "Vestes",
       latitude: 12.34,
