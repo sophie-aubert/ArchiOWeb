@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ROUTE MISE A JOUR
+// ROUTE MISE A JOUR AVEC NOM
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const userId = req.params.id;

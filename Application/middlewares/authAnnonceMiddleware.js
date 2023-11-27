@@ -37,6 +37,6 @@ export const authAnnonceMiddleware = async (req, res, next) => {
 
     return res.status(403).json({ message: "Accès non autorisé" });
   } catch (error) {
-    res.status(401).json({ message: "Invalid token" });
+    res.status(401).json({ message: "Merci de vous connecter" });
   }
 };

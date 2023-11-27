@@ -19,38 +19,85 @@ router.get("/", async (req, res) => {
 });
 
 // ROUTE POUR CREER UNE ANNONCE
-router.post("/", upload.single("image"), async (req, res) => {
-  try {
-    const { titre, description, utilisateur, categorie, latitude, longitude } =
-      req.body;
+// L'utilisateur doit être authentifié pour créer une annonce
 
-    const newAnnonce = new Annonce({
-      titre,
-      description,
-      utilisateur,
-      categorie,
-      geolocation: {
-        type: "Point",
-        coordinates: [longitude, latitude],
-      },
-    });
+router.post(
+  "/",
+  authAnnonceMiddleware,
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const {
+        titre,
+        description,
+        utilisateur,
+        categorie,
+        latitude,
+        longitude,
+      } = req.body;
 
-    if (req.file) {
-      newAnnonce.image = req.file.buffer;
+      const newAnnonce = new Annonce({
+        titre,
+        description,
+        utilisateur,
+        categorie,
+        geolocation: {
+          type: "Point",
+          coordinates: [longitude, latitude],
+        },
+      });
+
+      if (req.file) {
+        newAnnonce.image = req.file.buffer;
+      }
+
+      const savedAnnonce = await newAnnonce.save();
+
+      broadcastMessage("new_announcement", savedAnnonce);
+      broadcastMessage("illustrative_message", {
+        message: "This is an illustrative message.",
+      });
+
+      res.status(201).json(savedAnnonce);
+    } catch (error) {
+      res.status(400).json({ message: error.message });
     }
-
-    const savedAnnonce = await newAnnonce.save();
-
-    broadcastMessage("new_announcement", savedAnnonce);
-    broadcastMessage("illustrative_message", {
-      message: "This is an illustrative message.",
-    });
-
-    res.status(201).json(savedAnnonce);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
   }
-});
+);
+
+// ANCIEN CODE POUR CREER UNE ANNONCE
+// router.post("/", upload.single("image"), async (req, res) => {
+//   try {
+//     const { titre, description, utilisateur, categorie, latitude, longitude } =
+//       req.body;
+
+//     const newAnnonce = new Annonce({
+//       titre,
+//       description,
+//       utilisateur,
+//       categorie,
+//       geolocation: {
+//         type: "Point",
+//         coordinates: [longitude, latitude],
+//       },
+//     });
+
+//     if (req.file) {
+//       newAnnonce.image = req.file.buffer;
+//     }
+
+//     const savedAnnonce = await newAnnonce.save();
+
+//     broadcastMessage("new_announcement", savedAnnonce);
+//     broadcastMessage("illustrative_message", {
+//       message: "This is an illustrative message.",
+//     });
+
+//     res.status(201).json(savedAnnonce);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// });
 
 // ROUTE AFFICHAGE ANNONCE PAR ID
 router.get("/:id", async (req, res) => {
