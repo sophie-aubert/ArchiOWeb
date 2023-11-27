@@ -13,12 +13,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-// ROUTE POUR RECUPERER UNE TRANSACTION
+// ROUTE POUR CREER UNE TRANSACTION
 router.post("/", async (req, res) => {
   try {
-    const { annonce, acheteur, vendeur } = req.body;
+    const { annonce, prix, acheteur, vendeur } = req.body;
     const nouvelleTransaction = new Transaction({
       annonce,
+      prix,
       acheteur,
       vendeur,
     });

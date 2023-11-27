@@ -7,6 +7,10 @@ const transactionSchema = new mongoose.Schema(
       ref: "Annonce",
       required: true,
     },
+    prix: {
+      type: Number,
+      required: true,
+    },
     acheteur: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Utilisateur",
