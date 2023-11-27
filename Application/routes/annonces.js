@@ -19,25 +19,35 @@ router.get("/", async (req, res) => {
   }
 });
 
+// ROUTE AFFICHAGE ANNONCE PAR ID
+router.get("/:id", async (req, res) => {
+  try {
+    const annonce = await Annonce.findById(req.params.id);
+    res.json(annonce);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ROUTE POUR CREER UNE ANNONCE
+// L'utilisateur doit être authentifié pour créer une annonce
+// Le id se met
+
 // ROUTE POUR CREER UNE ANNONCE
 // L'utilisateur doit être authentifié pour créer une annonce
 router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
   try {
-    const {
-      titre,
-      description,
-      prix,
-      utilisateur,
-      categorie,
-      latitude,
-      longitude,
-    } = req.body;
+    const { titre, description, prix, categorie, latitude, longitude } =
+      req.body;
+
+    // Accédez à l'ID de l'utilisateur à partir du token dans le middleware d'authentification
+    const utilisateur = req.user.id;
 
     const newAnnonce = new Annonce({
       titre,
       description,
       prix,
-      utilisateur,
+      utilisateur, // Utilisez l'ID de l'utilisateur
       categorie,
       geolocation: {
         type: "Point",
@@ -62,27 +72,60 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
   }
 });
 
-// ROUTE AFFICHAGE ANNONCE PAR ID
-router.get("/:id", async (req, res) => {
-  try {
-    const annonce = await Annonce.findById(req.params.id);
-    res.json(annonce);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+// router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
+//   try {
+//     const {
+//       titre,
+//       description,
+//       prix,
+//       utilisateur,
+//       categorie,
+//       latitude,
+//       longitude,
+//     } = req.body;
+
+//     const newAnnonce = new Annonce({
+//       titre,
+//       description,
+//       prix,
+//       utilisateur,
+//       categorie,
+//       geolocation: {
+//         type: "Point",
+//         coordinates: [longitude, latitude],
+//       },
+//     });
+
+//     if (req.file) {
+//       newAnnonce.image = req.file.buffer;
+//     }
+
+//     const savedAnnonce = await newAnnonce.save();
+
+//     broadcastMessage("new_announcement", savedAnnonce);
+//     broadcastMessage("illustrative_message", {
+//       message: "This is an illustrative message.",
+//     });
+
+//     res.status(201).json(savedAnnonce);
+//   } catch (error) {
+//     res.status(400).json({ message: error.message });
+//   }
+// });
 
 // ROUTE MIS A JOUR ANNONCE
+// CONNECION UTILISATEUR OU ADMIN
 router.put("/:id", authAnnonceMiddleware, async (req, res) => {
   try {
     const annonceId = req.params.id;
-    const { titre, description, imageUrl } = req.body;
+    const { titre, description, prix, imageUrl } = req.body;
     const annonce = await Annonce.findById(annonceId);
     if (!annonce) {
       return res.status(404).json({ message: "Annonce non trouvée" });
     }
     annonce.titre = titre || annonce.titre;
     annonce.description = description || annonce.description;
+    annonce.prix = prix || annonce.prix;
     annonce.imageUrl = imageUrl || annonce.imageUrl;
     const updatedAnnonce = await annonce.save();
     res.json(updatedAnnonce);
@@ -91,10 +134,11 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
   }
 });
 
+// ROUTE SUPPRESSION ANNONCE
+// CONNEXION UTILISATEUR OU ADMIN
 router.delete("/:id", authAnnonceMiddleware, async (req, res) => {
   try {
     const annonceId = req.params.id;
-
     const annonce = await Annonce.findById(annonceId);
     if (!annonce) {
       return res.status(404).json({ message: "Annonce non trouvée" });
