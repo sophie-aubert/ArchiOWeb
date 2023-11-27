@@ -30,11 +30,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // ROUTE POUR CREER UNE ANNONCE
-// L'utilisateur doit être authentifié pour créer une annonce
-// Le id se met
-
-// ROUTE POUR CREER UNE ANNONCE
-// L'utilisateur doit être authentifié pour créer une annonce
+// CONNEXION UTILISATEUR OU ADMIN
 router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
   try {
     const { titre, description, prix, categorie, latitude, longitude } =
@@ -71,47 +67,6 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 });
-
-// router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
-//   try {
-//     const {
-//       titre,
-//       description,
-//       prix,
-//       utilisateur,
-//       categorie,
-//       latitude,
-//       longitude,
-//     } = req.body;
-
-//     const newAnnonce = new Annonce({
-//       titre,
-//       description,
-//       prix,
-//       utilisateur,
-//       categorie,
-//       geolocation: {
-//         type: "Point",
-//         coordinates: [longitude, latitude],
-//       },
-//     });
-
-//     if (req.file) {
-//       newAnnonce.image = req.file.buffer;
-//     }
-
-//     const savedAnnonce = await newAnnonce.save();
-
-//     broadcastMessage("new_announcement", savedAnnonce);
-//     broadcastMessage("illustrative_message", {
-//       message: "This is an illustrative message.",
-//     });
-
-//     res.status(201).json(savedAnnonce);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// });
 
 // ROUTE MIS A JOUR ANNONCE
 // CONNECION UTILISATEUR OU ADMIN

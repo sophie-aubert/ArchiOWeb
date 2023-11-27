@@ -43,6 +43,7 @@ router.post("/", async (req, res) => {
 });
 
 // ROUTE MISE A JOUR AVEC NOM
+// CONNEXION UTILISATEUR OU ADMIN
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const userId = req.params.id;
@@ -69,6 +70,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 });
 
 // ROUTE SUPPRESSION
+// CONNEXION UTILISATEUR OU ADMIN
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const userId = req.params.id;
