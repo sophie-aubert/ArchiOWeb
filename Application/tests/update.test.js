@@ -1,24 +1,24 @@
 import supertest from "supertest";
-import app from "../app.js"; // Assurez-vous que le chemin est correct
+import app from "../app.js";
 import { expect } from "chai";
-
-// On lui dit qu'on est connecté en tant que admin
-app.use((req, res, next) => {
-  req.user = { role: "admin" };
-  next();
-});
 
 describe("Update Operation Tests", () => {
   it("should update an existing object", async () => {
+    const authResponse = await supertest(app).post("/auth/login").send({
+      email: "TheAdmin@admin.com",
+      password: "admin",
+    });
+    const authToken = authResponse.body.token;
+    // console.log(authToken);
+
     const response = await supertest(app)
-      .put("/annonces/6554bfe00e60eaa1baf8290b")
+      .put("/annonces/65649339254870eaac0e2150")
+      .set("Authorization", `${authToken}`)
       .send({
-        titre: "Nouveau Titre",
-        description: "Nouvelle Description",
-        imageUrl: "nouvelle_url_image",
+        titre: "Annonce modifiée automatiquement par les tests",
       });
 
+    console.log(response.body);
     expect(response.status).to.equal(200);
-    // Ajoutez d'autres assertions selon vos besoins
   });
 });

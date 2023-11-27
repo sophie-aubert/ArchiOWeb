@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import app from "../app.js"; // Assurez-vous que le chemin est correct
+import app from "../app.js";
 import { expect } from "chai";
 
 describe("Create Operation Tests", () => {
@@ -13,8 +13,8 @@ describe("Create Operation Tests", () => {
       longitude: 56.78,
     });
 
+    console.log(response.body);
     expect(response.status).to.equal(201);
     expect(response.body).to.have.property("_id");
-    // Ajoutez d'autres assertions selon vos besoins
   });
 });
