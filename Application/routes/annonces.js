@@ -9,7 +9,7 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// Route qui liste toutes les annonces
+// ROUTE POUR RECUPERER TOUTES LES ANNONCES
 router.get("/", async (req, res) => {
   try {
     const annonces = await Annonce.find();
@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Route pour annoncer un nouvel article avec ou sans image
+// ROUTE POUR CREER UNE ANNONCE
 router.post("/", upload.single("image"), async (req, res) => {
   try {
     const { titre, description, utilisateur, categorie, latitude, longitude } =
@@ -37,13 +37,10 @@ router.post("/", upload.single("image"), async (req, res) => {
     });
 
     if (req.file) {
-      // Si une image est fournie, stockez-la dans le modèle comme un tampon de mémoire
       newAnnonce.image = req.file.buffer;
     }
 
     const savedAnnonce = await newAnnonce.save();
-
-    // Notify users about the new announcement
     broadcastMessage({ announcement: "New announcement posted!" });
 
     res.status(201).json(savedAnnonce);
@@ -73,8 +70,6 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
     if (!annonce) {
       return res.status(404).json({ message: "Annonce non trouvée" });
     }
-
-    // Mettez à jour les champs spécifiés
     annonce.titre = titre || annonce.titre;
     annonce.description = description || annonce.description;
     annonce.imageUrl = imageUrl || annonce.imageUrl;
@@ -86,17 +81,14 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
   }
 });
 
+// ROUTE SUPPRESSION ANNONCE
 router.delete("/:id", authAnnonceMiddleware, async (req, res) => {
   try {
     const annonceId = req.params.id;
-
-    // Vérifiez si l'annonce existe
     const annonce = await Annonce.findById(annonceId);
     if (!annonce) {
       return res.status(404).json({ message: "Annonce non trouvée" });
     }
-
-    // Vérifiez si l'utilisateur est l'auteur de l'annonce ou est administrateur
     if (
       annonce.utilisateur.toString() !== req.user.id &&
       req.user.isAdmin === false
@@ -104,7 +96,6 @@ router.delete("/:id", authAnnonceMiddleware, async (req, res) => {
       return res.status(403).json({ message: "Accès non autorisé" });
     }
 
-    // Supprimez l'annonce
     await Annonce.findByIdAndDelete(annonceId);
 
     res.json({ message: "Annonce supprimée avec succès" });

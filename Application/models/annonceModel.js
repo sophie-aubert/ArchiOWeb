@@ -48,8 +48,8 @@ const annonceSchema = new mongoose.Schema(
       },
     },
     image: {
-      type: Buffer, // Utilisation de Buffer pour stocker l'image
-      required: false, // Rendre le champ facultatif
+      type: Buffer,
+      required: false,
     },
   },
   { timestamps: true }

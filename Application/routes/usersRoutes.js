@@ -5,7 +5,7 @@ import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-// Route pour récupérer tous les utilisateurs
+// RECUPERER TOUS LES UTILISATEURS
 router.get("/", async (req, res) => {
   try {
     const users = await Utilisateur.find();
@@ -15,8 +15,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Route pour récupérer un utilisateur par nom d'utilisateur
-
+// RECUPERER UN UTILISATEUR
 router.get("/:username", async (req, res) => {
   try {
     const username = req.params.username;
@@ -30,15 +29,11 @@ router.get("/:username", async (req, res) => {
   }
 });
 
-// Route pour créer un nouvel utilisateur
+// ROUTE CREATION UTILISATEUR
 router.post("/", async (req, res) => {
   try {
     const { username, email, password } = req.body;
-
-    // Votre logique de validation et de création d'utilisateur
-
     const newUser = new Utilisateur({ username, email, password });
-
     const savedUser = await newUser.save();
 
     res.status(201).json(savedUser);
@@ -79,7 +74,6 @@ router.delete("/:id", authMiddleware, async (req, res) => {
     const userId = req.params.id;
     const requestingUserId = req.user.id;
 
-    // Vérifiez si l'utilisateur est l'administrateur ou l'utilisateur lui-même
     if (req.user.isAdmin || userId === requestingUserId) {
       const deletedUser = await Utilisateur.findByIdAndDelete(userId);
 
@@ -96,7 +90,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// Route pour obtenir le nombre d'annonces d'un utilisateur
+// ROUTE NOMBRE D'ANNONCES D'UN UTILISATEUR
 router.get("/:id/nombre-annonces", async (req, res) => {
   try {
     const userId = req.params.id;

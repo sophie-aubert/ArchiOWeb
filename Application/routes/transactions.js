@@ -4,7 +4,7 @@ import Transaction from "../models/transactionModel.js";
 
 const router = express.Router();
 
-// Route pour récupérer toutes les transactions
+// ROUTE POUR RECUPERER TOUTES LES TRANSACTIONS
 router.get("/", async (req, res) => {
   try {
     const transactions = await Transaction.find().populate("annonce acheteur");
@@ -14,27 +14,20 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Route pour créer une nouvelle transaction
+// ROUTE POUR RECUPERER UNE TRANSACTION
 router.post("/", async (req, res) => {
   try {
     const { annonce, acheteur, vendeur } = req.body;
-
-    // Créez une nouvelle transaction
     const nouvelleTransaction = new Transaction({
       annonce,
       acheteur,
       vendeur,
     });
-
-    // Sauvegardez la transaction dans la base de données
     const transaction = await nouvelleTransaction.save();
-
     res.status(201).json(transaction);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
-// Autres routes pour mettre à jour et supprimer des transactions...
 
 export default router;
