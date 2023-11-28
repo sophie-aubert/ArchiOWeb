@@ -30,4 +30,17 @@ router.post("/", async (req, res) => {
   }
 });
 
+// ROUTE POUR LISTER LES TRANSACTIONS D'UN UTILISATEUR
+// CONNEXION UTILISATEUR OU ADMIN
+router.get("/mesTransactions/:id", async (req, res) => {
+  try {
+    const transactions = await Transaction.find({
+      $or: [{ acheteur: req.params.id }, { vendeur: req.params.id }],
+    }).populate("annonce acheteur vendeur");
+    res.json(transactions);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 export default router;
