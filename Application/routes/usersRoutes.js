@@ -2,7 +2,8 @@ import express from "express";
 import Utilisateur from "../models/utilisateurModel.js";
 import Annonce from "../models/annonceModel.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -16,14 +17,10 @@ router.get("/", async (req, res) => {
   }
 });
 
-// RECUPERER UN UTILISATEUR
-router.get("/:username", async (req, res) => {
+// RECUPERER UN UTILISATEUR AVEC ID
+router.get("/:id", async (req, res) => {
   try {
-    const username = req.params.username;
-    const user = await Utilisateur.findOne({ username });
-    if (!user) {
-      return res.status(404).json({ message: "Utilisateur non trouvé" });
-    }
+    const user = await Utilisateur.findById(req.params.id);
     res.json(user);
   } catch (err) {
     res.status(500).json({ message: err.message });
