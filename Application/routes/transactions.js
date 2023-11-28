@@ -1,5 +1,7 @@
 import express from "express";
 import Transaction from "../models/transactionModel.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+
 const router = express.Router();
 
 const isAdminMiddleware = (req, res, next) => {
@@ -7,12 +9,10 @@ const isAdminMiddleware = (req, res, next) => {
     // L'utilisateur est un administrateur, passez à la suite
     next();
   } else {
-    res
-      .status(403)
-      .json({
-        message:
-          "Accès non autorisé. Seuls les administrateurs peuvent accéder à cette ressource.",
-      });
+    res.status(403).json({
+      message:
+        "Accès non autorisé. Seuls les administrateurs peuvent accéder à cette ressource.",
+    });
   }
 };
 
