@@ -1,7 +1,7 @@
 {
-  "name": "Nom de votre API",
+  "name": "The Niche",
   "version": "1.0.0",
-  "description": "Description de votre API",
-  "title": "Documentation de votre API",
+  "description": "The Niche API",
+  "title": "The Niche API",
   "url": "http://localhost:3000"
 }

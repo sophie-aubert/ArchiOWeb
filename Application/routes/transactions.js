@@ -29,23 +29,33 @@ router.get("/", authMiddleware, isAdminMiddleware, async (req, res) => {
   }
 });
 
-// ROUTE POUR CREER UNE TRANSACTION
 router.post("/", async (req, res) => {
   try {
     const { annonce, prix, acheteur, vendeur } = req.body;
+
+    // Vérifier si l'ID de l'annonce est déjà utilisé dans une autre transaction
+    const existingTransaction = await Transaction.findOne({ annonce });
+
+    if (existingTransaction) {
+      return res
+        .status(400)
+        .json({ message: "L'annonce est déjà associée à une transaction." });
+    }
+
+    // Si l'ID de l'annonce n'est pas utilisé, créer la nouvelle transaction
     const nouvelleTransaction = new Transaction({
       annonce,
       prix,
       acheteur,
       vendeur,
     });
+
     const transaction = await nouvelleTransaction.save();
     res.status(201).json(transaction);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 // ROUTE POUR LISTER LES TRANSACTIONS D'UN UTILISATEUR
 // CONNEXION UTILISATEUR OU ADMIN
 router.get("/mesTransactions/:id", async (req, res) => {
