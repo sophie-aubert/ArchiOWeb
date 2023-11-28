@@ -1,0 +1,7 @@
+{
+  "name": "Nom de votre API",
+  "version": "1.0.0",
+  "description": "Description de votre API",
+  "title": "Documentation de votre API",
+  "url": "http://localhost:3000"
+}

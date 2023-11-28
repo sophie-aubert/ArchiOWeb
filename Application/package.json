@@ -6,7 +6,8 @@
   "scripts": {
     "start": "set DEBUG=express-api:messaging && node app.js",
     "wscat": "wscat",
-    "test": "mocha tests/**/*.test.js"
+    "test": "mocha tests/**/*.test.js",
+    "apidoc": "apidoc -i routes/ -o docs/"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
