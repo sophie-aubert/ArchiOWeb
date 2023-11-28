@@ -1,10 +1,26 @@
 import express from "express";
 import Transaction from "../models/transactionModel.js";
-
 const router = express.Router();
 
+const isAdminMiddleware = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    // L'utilisateur est un administrateur, passez à la suite
+    next();
+  } else {
+    res
+      .status(403)
+      .json({
+        message:
+          "Accès non autorisé. Seuls les administrateurs peuvent accéder à cette ressource.",
+      });
+  }
+};
+
 // ROUTE POUR RECUPERER TOUTES LES TRANSACTIONS
-router.get("/", async (req, res) => {
+// seulement pour les admins
+// Utilisez le middleware isAdminMiddleware pour protéger la route
+
+router.get("/", authMiddleware, isAdminMiddleware, async (req, res) => {
   try {
     const transactions = await Transaction.find().populate("annonce acheteur");
     res.json(transactions);
