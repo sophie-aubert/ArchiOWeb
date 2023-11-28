@@ -2,6 +2,7 @@ import express from "express";
 import Utilisateur from "../models/utilisateurModel.js";
 import Annonce from "../models/annonceModel.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
+const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
@@ -42,18 +43,28 @@ router.post("/", async (req, res) => {
   }
 });
 
-// ROUTE MISE A JOUR AVEC NOM
+// ROUTE MISE A JOUR UTILISATEUR
 // CONNEXION UTILISATEUR OU ADMIN
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const userId = req.params.id;
     const requestingUserId = req.user.id;
+
     if (req.user.isAdmin || userId === requestingUserId) {
+      let updateFields = {};
       const { username, email, password } = req.body;
+
+      // Ne mettez à jour le mot de passe que s'il est fourni
+      if (password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        updateFields = { username, email, password: hashedPassword };
+      } else {
+        updateFields = { username, email };
+      }
 
       const updatedUser = await Utilisateur.findByIdAndUpdate(
         userId,
-        { username, email, password },
+        updateFields,
         { new: true }
       );
 
