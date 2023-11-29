@@ -15,6 +15,10 @@ const router = express.Router();
  * @apiName GetAllUsers
  * @apiGroup Utilisateurs
  *
+ *  * @apiExample Example :
+ *   https://thenicheapp.onrender.com/utilisateurs
+ *
+ *
  * @apiSuccess {Object[]} users List of users.
  * @apiSuccess {String} users._id User ID.
  * @apiSuccess {String} users.username Username.
@@ -54,6 +58,9 @@ router.get("/", async (req, res) => {
  * @apiName GetUserById
  * @apiGroup Utilisateurs
  *
+ *  @apiExample Example :
+ *   https://thenicheapp.onrender.com/utilisateurs/6564b0e57c0295946eb9c7a8
+ *
  * @apiParam {String} id User ID.
  *
  * @apiSuccess {String} _id User ID.
@@ -90,6 +97,9 @@ router.get("/:id", async (req, res) => {
  * @api {put} /utilisateurs/:id Mettre à jour un utilisateur par ID
  * @apiName UpdateUser
  * @apiGroup Utilisateurs
+ *
+ * @apiExample Example :
+ *   https://thenicheapp.onrender.com/utilisateurs/6564b0e57c0295946eb9c7a8
  *
  * @apiHeader {String} Authorization User's authorization token.
  *
@@ -170,6 +180,9 @@ router.put("/:id", authMiddleware, async (req, res) => {
  * @apiName DeleteUser
  * @apiGroup Utilisateurs
  *
+ *  *  @apiExample Example :
+ *   https://thenicheapp.onrender.com/utilisateurs/6564b0e57c0295946eb9c7a8
+ *
  * @apiHeader {String} Authorization User's authorization token.
  *
  * @apiParam {String} id User ID.
@@ -224,6 +237,9 @@ router.delete("/:id", authMiddleware, async (req, res) => {
  * @api {get} /utilisateurs/:id/nombre-annonces Récupérer le nombre d'annonces d'un utilisateur
  * @apiName GetNumberOfAnnouncementsByUser
  * @apiGroup Utilisateurs
+ *
+ *  @apiExample Example :
+ *   https://thenicheapp.onrender.com/utilisateurs/6564b0e57c0295946eb9c7a8/nombre-annonces
  *
  * @apiParam {String} id User ID.
  *
