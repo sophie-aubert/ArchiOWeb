@@ -167,9 +167,11 @@ router.get("/mesAnnonces/:id", authMiddleware, async (req, res) => {
  * @api {post} /annonces Ajouter une nouvelle annonce
  * @apiName CreateAnnonce
  * @apiGroup Annonces
- * 
+ *
  * @apiHeader {String} Authorization User's authorization token.
-
+ *
+ *  * @apiExample Example :
+ *     https://thenicheapp.onrender.com/annonces/
  *
  * @apiParam {String} titre Title of the annonce.
  * @apiParam {String} description Description of the annonce.
@@ -301,7 +303,7 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
  * @apiName DeleteAnnonce
  * @apiGroup Annonces
  *
- *  * @apiExample Example :
+ * @apiExample Example :
  *     https://thenicheapp.onrender.com/annonces/656612472a1a2ca907e7a2b8
  *
  * @apiHeader {String} Authorization User's authorization token.
