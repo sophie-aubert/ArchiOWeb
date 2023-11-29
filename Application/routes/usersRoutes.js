@@ -239,7 +239,7 @@ router.delete("/:id", authMiddleware, async (req, res) => {
  * @apiGroup Utilisateurs
  *
  *  @apiExample Example :
- *   https://thenicheapp.onrender.com/utilisateurs/6564b0e57c0295946eb9c7a8/nombre-annonces
+ *   https://thenicheapp.onrender.com/utilisateurs/656767a3812f486515225dd8/nombre-annonces
  *
  * @apiParam {String} id User ID.
  *

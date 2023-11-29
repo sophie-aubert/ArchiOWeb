@@ -15,7 +15,7 @@ const upload = multer({ storage: storage });
  * @apiGroup Annonces
  *
  * @apiExample Example ::
- *     https://thenicheapp.onrender.com/transactions/mesTransactions/6564b0dc7c0295946eb9c7a5
+ *     https://thenicheapp.onrender.com/annonces?page=1&limit=10&categorie=Vestes&prixMin=10&prixMax=50
  *
  * @apiParam {Number} [page=1] Page number for pagination.
  * @apiParam {Number} [limit=10] Number of items per page.
@@ -77,7 +77,7 @@ router.get("/", async (req, res) => {
  * @apiGroup Annonces
  *
  * @apiExample Example :
- *     https://thenicheapp.onrender.com/annonces/656610f02a1a2ca907e7a2a5
+ *     https://thenicheapp.onrender.com/annonces/656767a3812f486515225dd8
  *
  * @apiParam {String} id Annonce's unique ID.
  *
@@ -119,7 +119,7 @@ router.get("/:id", async (req, res) => {
  * @apiGroup Annonces
  *
  * @apiExample Example :
- *     https://thenicheapp.onrender.com/annonces/6564b18a7c0295946eb9c7be
+ *     https://thenicheapp.onrender.com/annonces/mesAnnonces/656767a3812f486515225dd8
  *
  *
  * @apiHeader {String} Authorization User's authorization token.
@@ -249,7 +249,7 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
  * @apiGroup Annonces
  *
  * @apiExample Example :
- *     https://thenicheapp.onrender.com/annonces/656610f02a1a2ca907e7a2a5
+ *     https://thenicheapp.onrender.com/annonces/65676815812f486515225ddc
  *
  * @apiHeader {String} Authorization User's authorization token.
  *
@@ -307,7 +307,7 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
  * @apiGroup Annonces
  *
  * @apiExample Example :
- *     https://thenicheapp.onrender.com/annonces/656612472a1a2ca907e7a2b8
+ *     https://thenicheapp.onrender.com/annonces/65676815812f486515225ddc
  *
  * @apiHeader {String} Authorization User's authorization token.
  *
