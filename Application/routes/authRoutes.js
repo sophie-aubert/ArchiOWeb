@@ -8,9 +8,12 @@ const router = express.Router();
 
 // ROUTE INSCRIPTION
 /**
- * @api {post} /utilisateurs/inscription Enregistrer un nouvel utilisateur
+ * @api {post} /auth/inscription Enregistrer un nouvel utilisateur
  * @apiName RegisterUser
  * @apiGroup Authentification
+ *
+ *  * @apiExample Example :
+ *    https://thenicheapp.onrender.com/auth/inscription
  *
  * @apiParam {String} username User's username.
  * @apiParam {String} email User's email address.
