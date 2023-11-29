@@ -59,7 +59,7 @@ router.get("/", async (req, res) => {
  * @apiGroup Utilisateurs
  *
  *  @apiExample Example :
- *   https://thenicheapp.onrender.com/utilisateurs/6564b0e57c0295946eb9c7a8
+ *   https://thenicheapp.onrender.com/utilisateurs/656767a3812f486515225dd8
  *
  * @apiParam {String} id User ID.
  *
@@ -99,7 +99,7 @@ router.get("/:id", async (req, res) => {
  * @apiGroup Utilisateurs
  *
  * @apiExample Example :
- *   https://thenicheapp.onrender.com/utilisateurs/6564b0e57c0295946eb9c7a8
+ *   https://thenicheapp.onrender.com/utilisateurs/656767a3812f486515225dd8
  *
  * @apiHeader {String} Authorization User's authorization token.
  *
@@ -181,7 +181,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
  * @apiGroup Utilisateurs
  *
  *  *  @apiExample Example :
- *   https://thenicheapp.onrender.com/utilisateurs/6564b0e57c0295946eb9c7a8
+ *   https://thenicheapp.onrender.com/utilisateurs/656767a3812f486515225dd8
  *
  * @apiHeader {String} Authorization User's authorization token.
  *

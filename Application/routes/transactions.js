@@ -182,11 +182,12 @@ router.post("/", async (req, res) => {
  *       "message": "Internal Server Error"
  *     }
  */
-router.get("/mesTransactions/:id", async (req, res) => {
+
+router.get("/mesTransactions/:id", authMiddleware, async (req, res) => {
   try {
     const transactions = await Transaction.find({
       $or: [{ acheteur: req.params.id }, { vendeur: req.params.id }],
-    }).populate("annonce acheteur vendeur");
+    }).populate("annonce acheteur");
     res.json(transactions);
   } catch (error) {
     res.status(500).json({ message: error.message });
