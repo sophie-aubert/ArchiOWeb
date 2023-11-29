@@ -117,6 +117,8 @@ router.get("/:id", async (req, res) => {
  * @api {get} /annonces/mesAnnonces/:id Lister les annonces d'un utilisateur par ID
  * @apiName GetAnnoncesByUser
  * @apiGroup Annonces
+ * @apiPermission user, admin
+
  *
  * @apiExample Example :
  *     https://thenicheapp.onrender.com/annonces/mesAnnonces/656767a3812f486515225dd8
@@ -167,6 +169,8 @@ router.get("/mesAnnonces/:id", authMiddleware, async (req, res) => {
  * @api {post} /annonces Ajouter une nouvelle annonce
  * @apiName CreateAnnonce
  * @apiGroup Annonces
+ * @apiPermission user, admin
+
  *
  * @apiExample Example :
  *     https://thenicheapp.onrender.com/annonces
@@ -247,6 +251,8 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
  * @api {put} /annonces/:id Modifier une annonce par ID
  * @apiName UpdateAnnonce
  * @apiGroup Annonces
+ * @apiPermission user, admin
+
  *
  * @apiExample Example :
  *     https://thenicheapp.onrender.com/annonces/65676815812f486515225ddc
@@ -304,6 +310,8 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
  * @api {delete} /annonces/:id Supprimer une annonce par ID
  * @apiName DeleteAnnonce
  * @apiGroup Annonces
+ * @apiPermission user, admin
+
  *
  * @apiExample Example :
  *     https://thenicheapp.onrender.com/annonces/656767a3812f486515225dd8

@@ -97,6 +97,7 @@ router.get("/:id", async (req, res) => {
  * @api {put} /utilisateurs/:id Mettre à jour un utilisateur par ID
  * @apiName UpdateUser
  * @apiGroup Utilisateurs
+ * @apiPermission user, admin
  *
  * @apiExample Example :
  *   https://thenicheapp.onrender.com/utilisateurs/656767a3812f486515225dd8
@@ -179,6 +180,8 @@ router.put("/:id", authMiddleware, async (req, res) => {
  * @api {delete} /utilisateurs/:id Supprimer un utilisateur par ID
  * @apiName DeleteUser
  * @apiGroup Utilisateurs
+ * @apiPermission user, admin
+
  *
  *  *  @apiExample Example :
  *   https://thenicheapp.onrender.com/utilisateurs/656767a3812f486515225dd8
