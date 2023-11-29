@@ -10,7 +10,7 @@ const upload = multer({ storage: storage });
 
 // ROUTE POUR RECUPERER TOUTES LES ANNONCES AVEC FILTRES FACULTATIFS ET PAGINATION
 /**
- * @api {get} /annonces Request all annonces with optional filters and pagination
+ * @api {get} /annonces Lister toutes les annonces avec filtres et pagination
  * @apiName GetAnnonces
  * @apiGroup Annonces
  *
@@ -33,7 +33,7 @@ const upload = multer({ storage: storage });
  *         "titre": "Example Title",
  *         "description": "Example Description",
  *         "prix": 20.5,
- *         "categorie": "Chaussures"
+ *         "categorie": "Vestes"
  *       },
  *       // ...
  *     ]
@@ -69,7 +69,7 @@ router.get("/", async (req, res) => {
 
 // ROUTE AFFICHAGE ANNONCE PAR ID
 /**
- * @api {get} /annonces/:id Request details of a specific annonce
+ * @api {get} /annonces/:id Afficher une annonce par ID
  * @apiName GetAnnonceById
  * @apiGroup Annonces
  *
@@ -108,9 +108,11 @@ router.get("/:id", async (req, res) => {
 // ROUTE POUR LISTER LES ANNONCES D'UN UTILISATEUR
 // CONNEXION UTILISATEUR OU ADMIN
 /**
- * @api {get} /annonces/mesAnnonces/:id Request annonces created by a specific user
+ * @api {get} /annonces/mesAnnonces/:id Lister les annonces d'un utilisateur par ID
  * @apiName GetAnnoncesByUser
  * @apiGroup Annonces
+ *
+ * @apiHeader {String} Authorization User's authorization token.
  *
  * @apiParam {String} id User's unique ID.
  *
@@ -152,7 +154,7 @@ router.get("/mesAnnonces/:id", authMiddleware, async (req, res) => {
 // ROUTE POUR CREER UNE ANNONCE
 // CONNEXION UTILISATEUR OU ADMIN
 /**
- * @api {post} /annonces Create a new annonce
+ * @api {post} /annonces Ajouter une nouvelle annonce
  * @apiName CreateAnnonce
  * @apiGroup Annonces
  *
@@ -211,8 +213,8 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
     const savedAnnonce = await newAnnonce.save();
 
     broadcastMessage("new_announcement", savedAnnonce);
-    broadcastMessage("message", {
-      message: "Une nouvelle annonce a été publiée.",
+    broadcastMessage("illustrative_message", {
+      message: "This is an illustrative message.",
     });
 
     res.status(201).json(savedAnnonce);
@@ -224,9 +226,11 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
 // ROUTE MIS A JOUR ANNONCE
 // CONNECION UTILISATEUR OU ADMIN
 /**
- * @api {put} /annonces/:id Update an existing annonce
+ * @api {put} /annonces/:id Modifier une annonce par ID
  * @apiName UpdateAnnonce
  * @apiGroup Annonces
+ *
+ * @apiHeader {String} Authorization User's authorization token.
  *
  * @apiParam {String} id Annonce's unique ID.
  * @apiParam {String} [titre] New title for the annonce.
@@ -277,9 +281,11 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
 // CONNEXION UTILISATEUR OU ADMIN
 
 /**
- * @api {delete} /annonces/:id Delete an existing annonce
+ * @api {delete} /annonces/:id Supprimer une annonce par ID
  * @apiName DeleteAnnonce
  * @apiGroup Annonces
+ *
+ * @apiHeader {String} Authorization User's authorization token.
  *
  * @apiParam {String} id Annonce's unique ID.
  *

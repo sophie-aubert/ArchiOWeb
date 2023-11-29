@@ -9,6 +9,35 @@ import mongoose from "mongoose";
 const router = express.Router();
 
 // RECUPERER TOUS LES UTILISATEURS
+
+/**
+ * @api {get} /utilisateurs Lister de tous les utilisateurs
+ * @apiName GetAllUsers
+ * @apiGroup Utilisateurs
+ *
+ * @apiSuccess {Object[]} users List of users.
+ * @apiSuccess {String} users._id User ID.
+ * @apiSuccess {String} users.username Username.
+ * @apiSuccess {String} users.email User email.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     [
+ *       {
+ *         "_id": "user-id",
+ *         "username": "john_doe",
+ *         "email": "john.doe@example.com"
+ *       },
+ *       // ... other users
+ *     ]
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "message": "Internal Server Error"
+ *     }
+ */
+
 router.get("/", async (req, res) => {
   try {
     const users = await Utilisateur.find();
@@ -19,6 +48,32 @@ router.get("/", async (req, res) => {
 });
 
 // RECUPERER UN UTILISATEUR AVEC ID
+
+/**
+ * @api {get} /utilisateurs/:id Récupérer un utilisateur par ID
+ * @apiName GetUserById
+ * @apiGroup Utilisateurs
+ *
+ * @apiParam {String} id User ID.
+ *
+ * @apiSuccess {String} _id User ID.
+ * @apiSuccess {String} username Username.
+ * @apiSuccess {String} email User email.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "_id": "user-id",
+ *       "username": "john_doe",
+ *       "email": "john.doe@example.com"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "message": "Internal Server Error"
+ *     }
+ */
 router.get("/:id", async (req, res) => {
   try {
     const user = await Utilisateur.findById(req.params.id);
@@ -28,21 +83,50 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// ROUTE CREATION UTILISATEUR
-router.post("/", async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-    const newUser = new Utilisateur({ username, email, password });
-    const savedUser = await newUser.save();
-
-    res.status(201).json(savedUser);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
 // ROUTE MISE A JOUR UTILISATEUR
 // CONNEXION UTILISATEUR OU ADMIN
+
+/**
+ * @api {put} /utilisateurs/:id Mettre à jour un utilisateur par ID
+ * @apiName UpdateUser
+ * @apiGroup Utilisateurs
+ *
+ * @apiHeader {String} Authorization User's authorization token.
+ *
+ * @apiParam {String} id User ID.
+ * @apiParam {String} [username] New username.
+ * @apiParam {String} [email] New user email.
+ * @apiParam {String} [password] New user password.
+ *
+ * @apiSuccess {String} _id User ID.
+ * @apiSuccess {String} username Updated username.
+ * @apiSuccess {String} email Updated user email.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "_id": "user-id",
+ *       "username": "new_john_doe",
+ *       "email": "new_john.doe@example.com"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *       "message": "Access denied. You are not authorized to access this resource."
+ *     }
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "message": "User not found"
+ *     }
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "message": "Internal Server Error"
+ *     }
+ */
+
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const userId = req.params.id;
@@ -80,6 +164,40 @@ router.put("/:id", authMiddleware, async (req, res) => {
 
 // ROUTE SUPPRESSION
 // CONNEXION UTILISATEUR OU ADMIN
+
+/**
+ * @api {delete} /utilisateurs/:id Supprimer un utilisateur par ID
+ * @apiName DeleteUser
+ * @apiGroup Utilisateurs
+ *
+ * @apiHeader {String} Authorization User's authorization token.
+ *
+ * @apiParam {String} id User ID.
+ *
+ * @apiSuccess {String} message Deletion success message.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "User deleted successfully"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *       "message": "Access denied. You are not authorized to access this resource."
+ *     }
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "message": "User not found"
+ *     }
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "message": "Internal Server Error"
+ *     }
+ */
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const userId = req.params.id;
@@ -102,6 +220,34 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 });
 
 // ROUTE NOMBRE D'ANNONCES D'UN UTILISATEUR
+/**
+ * @api {get} /utilisateurs/:id/nombre-annonces Récupérer le nombre d'annonces d'un utilisateur
+ * @apiName GetNumberOfAnnouncementsByUser
+ * @apiGroup Utilisateurs
+ *
+ * @apiParam {String} id User ID.
+ *
+ * @apiSuccess {String} userId User ID.
+ * @apiSuccess {Number} nombreAnnonces Number of announcements.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "userId": "user-id",
+ *       "nombreAnnonces": 5
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "message": "User not found"
+ *     }
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "message": "Internal Server Error"
+ *     }
+ */
 router.get("/:id/nombre-annonces", async (req, res) => {
   try {
     const userId = req.params.id;

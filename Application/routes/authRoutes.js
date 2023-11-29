@@ -7,6 +7,29 @@ import Annonce from "../models/annonceModel.js";
 const router = express.Router();
 
 // ROUTE INSCRIPTION
+/**
+ * @api {post} /utilisateurs/inscription Enregistrer un nouvel utilisateur
+ * @apiName RegisterUser
+ * @apiGroup Authentification
+ *
+ * @apiParam {String} username User's username.
+ * @apiParam {String} email User's email address.
+ * @apiParam {String} password User's password.
+ *
+ * @apiSuccess {String} token Authentication token.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 Created
+ *     {
+ *       "token": "example-token-string"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "message": "This user already exists"
+ *     }
+ */
 router.post("/inscription", async (req, res) => {
   try {
     console.log("Requête reçue avec le corps :", req.body);
@@ -45,6 +68,32 @@ router.post("/inscription", async (req, res) => {
 });
 
 // ROUTE CONNEXION
+/**
+ * @api {post} /utilisateurs/login Authentifier et connecter un utilisateur
+ * @apiGroup Authentification
+ *
+ * @apiParam {String} email User's email address.
+ * @apiParam {String} password User's password.
+ *
+ * @apiSuccess {String} token Authentication token.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "token": "example-token-string"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "message": "User not found"
+ *     }
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 401 Unauthorized
+ *     {
+ *       "message": "Incorrect password"
+ *     }
+ */
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;

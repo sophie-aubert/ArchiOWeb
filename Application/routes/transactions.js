@@ -20,6 +20,46 @@ const isAdminMiddleware = (req, res, next) => {
 // seulement pour les admins
 // Utilisez le middleware isAdminMiddleware pour protéger la route
 
+/**
+ * @api {get} /transactions Lister toutes les transactions
+ * @apiName GetAllTransactions
+ * @apiGroup Transactions
+ * @apiPermission admin
+ *
+ * @apiHeader {String} Authorization User's authorization token.
+ *
+ * @apiSuccess {Object[]} transactions List of transactions.
+ * @apiSuccess {String} transactions._id Transaction ID.
+ * @apiSuccess {Object} transactions.annonce Associated announcement.
+ * @apiSuccess {Object} transactions.acheteur Buyer information.
+ * @apiSuccess {Object} transactions.vendeur Seller information.
+ * @apiSuccess {Number} transactions.prix Transaction price.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     [
+ *       {
+ *         "_id": "transaction-id",
+ *         "annonce": { /* Announcement details *\/ },
+ *         "acheteur": { /* Buyer details *\/ },
+ *         "vendeur": { /* Seller details *\/ },
+ *         "prix": 50.00
+ *       },
+ *       // ...
+ *     ]
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *       "message": "Access denied. Only administrators can access this resource."
+ *     }
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "message": "Internal Server Error"
+ *     }
+ */
+
 router.get("/", authMiddleware, isAdminMiddleware, async (req, res) => {
   try {
     const transactions = await Transaction.find().populate("annonce acheteur");
@@ -28,6 +68,44 @@ router.get("/", authMiddleware, isAdminMiddleware, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+/**
+ * @api {post} /transactions Créer une nouvelle transaction
+ * @apiName CreateTransaction
+ * @apiGroup Transactions
+ *
+ * @apiParam {String} annonce Announcement ID.
+ * @apiParam {Number} prix Transaction price.
+ * @apiParam {String} acheteur Buyer ID.
+ * @apiParam {String} vendeur Seller ID.
+ *
+ * @apiSuccess {String} _id Transaction ID.
+ * @apiSuccess {String} annonce Associated announcement ID.
+ * @apiSuccess {String} acheteur Buyer ID.
+ * @apiSuccess {String} vendeur Seller ID.
+ * @apiSuccess {Number} prix Transaction price.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 Created
+ *     {
+ *       "_id": "transaction-id",
+ *       "annonce": "announcement-id",
+ *       "acheteur": "buyer-id",
+ *       "vendeur": "seller-id",
+ *       "prix": 50.00
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "message": "The announcement is already associated with a transaction."
+ *     }
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "message": "Internal Server Error"
+ *     }
+ */
 
 router.post("/", async (req, res) => {
   try {
@@ -58,6 +136,41 @@ router.post("/", async (req, res) => {
 });
 // ROUTE POUR LISTER LES TRANSACTIONS D'UN UTILISATEUR
 // CONNEXION UTILISATEUR OU ADMIN
+
+/**
+ * @api {get} /transactions/mesTransactions/:id Lister des transactions d'un utilisateur
+ * @apiName GetUserTransactions
+ * @apiGroup Transactions
+ * @apiPermission user, admin
+ *
+ * @apiParam {String} id User ID.
+ *
+ * @apiSuccess {Object[]} transactions List of transactions.
+ * @apiSuccess {String} transactions._id Transaction ID.
+ * @apiSuccess {Object} transactions.annonce Associated announcement.
+ * @apiSuccess {Object} transactions.acheteur Buyer information.
+ * @apiSuccess {Object} transactions.vendeur Seller information.
+ * @apiSuccess {Number} transactions.prix Transaction price.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     [
+ *       {
+ *         "_id": "transaction-id",
+ *         "annonce": { /* Announcement details *\/ },
+ *         "acheteur": { /* Buyer details *\/ },
+ *         "vendeur": { /* Seller details *\/ },
+ *         "prix": 50.00
+ *       },
+ *       // ... other transactions
+ *     ]
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *       "message": "Internal Server Error"
+ *     }
+ */
 router.get("/mesTransactions/:id", async (req, res) => {
   try {
     const transactions = await Transaction.find({

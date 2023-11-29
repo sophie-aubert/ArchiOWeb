@@ -1,9 +1,9 @@
 {
   "name": "Vide Dressing API - THE NICHE",
   "version": "1.0.0",
-  "description": "API for managing announcements, users, and transactions for 'THE NICHE' online closet.",
-  "title": "Vide Dressing API",
-  "url": "https://example.com/api",
+  "description": "Bienvenue sur le manuel de l'API qui vous permettra de gérer les annonces, les utilisateurs et les transactions pour le vide dressing en ligne 'THE NICHE'.",
+  "title": "THE NICHE - Le Vide Dressing API",
+  "url": "https://thenicheapp.onrender.com",
   "header": {
     "content-type": "application/json"
   },
@@ -13,26 +13,26 @@
     "withGenerator": true
   },
   "order": [
-    "Utilisateurs",
     "Authentification",
+    "Utilisateurs",
     "Annonces",
     "Transactions"
   ],
   "groups": {
-    "Utilisateurs": "Endpoints for managing users.",
     "Authentification": "User authentication endpoints.",
+    "Utilisateurs": "Endpoints for managing users.",
     "Annonces": "Endpoints for managing announcements.",
     "Transactions": "Endpoints for managing transactions."
   },
   "apidoc": {
-    "name": "VideDressingAPI",
+    "name": "Vide Dressing API - THE NICHE",
     "version": "1.0.0"
   },
   "examples": {
     "curl": [
       {
         "title": "Get all users",
-        "content": "curl -X GET https://example.com/api/utilisateurs"
+        "content": "curl -X GET https://thenicheapp.onrender.com/utilisateurs"
       },
       {
         "title": "Create a new announcement",
