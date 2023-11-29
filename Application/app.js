@@ -31,9 +31,7 @@ app.use("/annonces", annonces);
 app.use("/transactions", transactions);
 /////////////////////////////////////////////////////////////////////////
 
-// Création du serveur websocket
-const server = http.createServer(app);
-createWebSocketServer(server);
+
 
 // BASE DE DONNEE
 mongoose
@@ -44,9 +42,7 @@ mongoose
   .then(() => {
     console.log("Connexion à MongoDB établie avec succès");
 
-    app.listen(port, () => {
-      console.log(`Le serveur écoute sur le port ${port}`);
-    });
+
   })
   .catch((err) => {
     console.error("Erreur de connexion à MongoDB : " + err);
