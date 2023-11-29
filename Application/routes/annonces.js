@@ -15,7 +15,7 @@ const upload = multer({ storage: storage });
  * @apiGroup Annonces
  *
  * @apiExample Example ::
- *     https://thenicheapp.onrender.com/annonces?page=1&limit=10&categorie=Vestes&prixMin=10&prixMax=50
+ *     https://thenicheapp.onrender.com/annonces?page=1&limit=10&categorie=Vestes
  *
  * @apiParam {Number} [page=1] Page number for pagination.
  * @apiParam {Number} [limit=10] Number of items per page.
