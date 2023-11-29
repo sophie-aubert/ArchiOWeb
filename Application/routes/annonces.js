@@ -4,16 +4,21 @@ import Annonce from "../models/annonceModel.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { broadcastMessage } from "../utils/messaging.js";
 import { authAnnonceMiddleware } from "../middlewares/authAnnonceMiddleware.js";
-
 const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // ROUTE POUR RECUPERER TOUTES LES ANNONCES AVEC FILTRES FACULTATIFS ET PAGINATION
 /**
- * @api {get} /annonces Request all annonces
+ * @api {get} /annonces Request all annonces with optional filters and pagination
  * @apiName GetAnnonces
  * @apiGroup Annonces
+ *
+ * @apiParam {Number} [page=1] Page number for pagination.
+ * @apiParam {Number} [limit=10] Number of items per page.
+ * @apiParam {String} [categorie] Filter by category.
+ * @apiParam {Number} [prixMin] Filter by minimum price.
+ * @apiParam {Number} [prixMax] Filter by maximum price.
  *
  * @apiSuccess {Object[]} annonces List of annonces.
  * @apiSuccess {String} annonces.titre Title of the annonce.
@@ -23,19 +28,16 @@ const upload = multer({ storage: storage });
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
- *     {
- *       "annonces": [
- *         {
- *           "titre": "Example Title",
- *           "description": "Example Description",
- *           "prix": 20.5,
- *           "categorie": "Shoes"
- *         },
- *         // ... (other annonces)
- *       ]
- *     }
+ *     [
+ *       {
+ *         "titre": "Example Title",
+ *         "description": "Example Description",
+ *         "prix": 20.5,
+ *         "categorie": "Chaussures"
+ *       },
+ *       // ...
+ *     ]
  */
-
 router.get("/", async (req, res) => {
   try {
     const page = req.query.page || 1;
@@ -66,6 +68,33 @@ router.get("/", async (req, res) => {
 });
 
 // ROUTE AFFICHAGE ANNONCE PAR ID
+/**
+ * @api {get} /annonces/:id Request details of a specific annonce
+ * @apiName GetAnnonceById
+ * @apiGroup Annonces
+ *
+ * @apiParam {String} id Annonce's unique ID.
+ *
+ * @apiSuccess {String} titre Title of the annonce.
+ * @apiSuccess {String} description Description of the annonce.
+ * @apiSuccess {Number} prix Price of the annonce.
+ * @apiSuccess {String} categorie Category of the annonce.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "titre": "Example Title",
+ *       "description": "Example Description",
+ *       "prix": 20.5,
+ *       "categorie": "Chaussures"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "message": "Annonce not found"
+ *     }
+ */
 router.get("/:id", async (req, res) => {
   try {
     const annonce = await Annonce.findById(req.params.id);
@@ -78,6 +107,37 @@ router.get("/:id", async (req, res) => {
 // *** NOUVEAU ***
 // ROUTE POUR LISTER LES ANNONCES D'UN UTILISATEUR
 // CONNEXION UTILISATEUR OU ADMIN
+/**
+ * @api {get} /annonces/mesAnnonces/:id Request annonces created by a specific user
+ * @apiName GetAnnoncesByUser
+ * @apiGroup Annonces
+ *
+ * @apiParam {String} id User's unique ID.
+ *
+ * @apiSuccess {Object[]} annonces List of annonces created by the user.
+ * @apiSuccess {String} annonces.titre Title of the annonce.
+ * @apiSuccess {String} annonces.description Description of the annonce.
+ * @apiSuccess {Number} annonces.prix Price of the annonce.
+ * @apiSuccess {String} annonces.categorie Category of the annonce.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     [
+ *       {
+ *         "titre": "Example Title",
+ *         "description": "Example Description",
+ *         "prix": 20.5,
+ *         "categorie": "Shoes"
+ *       },
+ *       // ... (other annonces created by the user)
+ *     ]
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "message": "User not found"
+ *     }
+ */
 router.get("/mesAnnonces/:id", authMiddleware, async (req, res) => {
   try {
     const annonces = await Annonce.find({
@@ -91,6 +151,39 @@ router.get("/mesAnnonces/:id", authMiddleware, async (req, res) => {
 
 // ROUTE POUR CREER UNE ANNONCE
 // CONNEXION UTILISATEUR OU ADMIN
+/**
+ * @api {post} /annonces Create a new annonce
+ * @apiName CreateAnnonce
+ * @apiGroup Annonces
+ *
+ * @apiParam {String} titre Title of the annonce.
+ * @apiParam {String} description Description of the annonce.
+ * @apiParam {Number} prix Price of the annonce.
+ * @apiParam {String} categorie Category of the annonce.
+ * @apiParam {Number} latitude Latitude for geolocation.
+ * @apiParam {Number} longitude Longitude for geolocation.
+ * @apiParam {File} image Image file for the annonce.
+ *
+ * @apiSuccess {String} titre Title of the created annonce.
+ * @apiSuccess {String} description Description of the created annonce.
+ * @apiSuccess {Number} prix Price of the created annonce.
+ * @apiSuccess {String} categorie Category of the created annonce.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 Created
+ *     {
+ *       "titre": "Example Title",
+ *       "description": "Example Description",
+ *       "prix": 20.5,
+ *       "categorie": "Shoes"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "message": "Invalid input data"
+ *     }
+ */
 router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
   try {
     const { titre, description, prix, categorie, latitude, longitude } =
@@ -130,6 +223,37 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
 
 // ROUTE MIS A JOUR ANNONCE
 // CONNECION UTILISATEUR OU ADMIN
+/**
+ * @api {put} /annonces/:id Update an existing annonce
+ * @apiName UpdateAnnonce
+ * @apiGroup Annonces
+ *
+ * @apiParam {String} id Annonce's unique ID.
+ * @apiParam {String} [titre] New title for the annonce.
+ * @apiParam {String} [description] New description for the annonce.
+ * @apiParam {Number} [prix] New price for the annonce.
+ * @apiParam {String} [imageUrl] New image URL for the annonce.
+ *
+ * @apiSuccess {String} titre Updated title of the annonce.
+ * @apiSuccess {String} description Updated description of the annonce.
+ * @apiSuccess {Number} prix Updated price of the annonce.
+ * @apiSuccess {String} imageUrl Updated image URL of the annonce.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "titre": "Updated Title",
+ *       "description": "Updated Description",
+ *       "prix": 25.5,
+ *       "imageUrl": "http://example.com/updated-image.jpg"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "message": "Annonce not found"
+ *     }
+ */
 router.put("/:id", authAnnonceMiddleware, async (req, res) => {
   try {
     const annonceId = req.params.id;
@@ -151,6 +275,28 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
 
 // ROUTE SUPPRESSION ANNONCE
 // CONNEXION UTILISATEUR OU ADMIN
+
+/**
+ * @api {delete} /annonces/:id Delete an existing annonce
+ * @apiName DeleteAnnonce
+ * @apiGroup Annonces
+ *
+ * @apiParam {String} id Annonce's unique ID.
+ *
+ * @apiSuccess {String} message Success message.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "Annonce deleted successfully"
+ *     }
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "message": "Annonce not found"
+ *     }
+ */
 router.delete("/:id", authAnnonceMiddleware, async (req, res) => {
   try {
     const annonceId = req.params.id;
