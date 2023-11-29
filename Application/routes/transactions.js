@@ -26,6 +26,10 @@ const isAdminMiddleware = (req, res, next) => {
  * @apiGroup Transactions
  * @apiPermission admin
  *
+ * @apiExample Example :
+ *   https://thenicheapp.onrender.com/transactions
+ *
+ *
  * @apiHeader {String} Authorization User's authorization token.
  *
  * @apiSuccess {Object[]} transactions List of transactions.
@@ -73,6 +77,9 @@ router.get("/", authMiddleware, isAdminMiddleware, async (req, res) => {
  * @api {post} /transactions Créer une nouvelle transaction
  * @apiName CreateTransaction
  * @apiGroup Transactions
+ *
+ *  * @apiExample Example :
+ *   https://thenicheapp.onrender.com/transactions
  *
  * @apiParam {String} annonce Announcement ID.
  * @apiParam {Number} prix Transaction price.
@@ -142,6 +149,10 @@ router.post("/", async (req, res) => {
  * @apiName GetUserTransactions
  * @apiGroup Transactions
  * @apiPermission user, admin
+ *
+ *  * @apiExample Example :
+ *   https://thenicheapp.onrender.com/transactions/mesTransactions/6564b0e57c0295946eb9c7a8
+ *
  *
  * @apiParam {String} id User ID.
  *
