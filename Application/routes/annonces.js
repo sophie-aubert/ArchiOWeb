@@ -10,6 +10,32 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // ROUTE POUR RECUPERER TOUTES LES ANNONCES AVEC FILTRES FACULTATIFS ET PAGINATION
+/**
+ * @api {get} /annonces Request all annonces
+ * @apiName GetAnnonces
+ * @apiGroup Annonces
+ *
+ * @apiSuccess {Object[]} annonces List of annonces.
+ * @apiSuccess {String} annonces.titre Title of the annonce.
+ * @apiSuccess {String} annonces.description Description of the annonce.
+ * @apiSuccess {Number} annonces.prix Price of the annonce.
+ * @apiSuccess {String} annonces.categorie Category of the annonce.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "annonces": [
+ *         {
+ *           "titre": "Example Title",
+ *           "description": "Example Description",
+ *           "prix": 20.5,
+ *           "categorie": "Shoes"
+ *         },
+ *         // ... (other annonces)
+ *       ]
+ *     }
+ */
+
 router.get("/", async (req, res) => {
   try {
     const page = req.query.page || 1;

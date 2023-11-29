@@ -1,7 +1,44 @@
 {
-  "name": "The Niche",
+  "name": "Vide Dressing API - THE NICHE",
   "version": "1.0.0",
-  "description": "The Niche API",
-  "title": "The Niche API",
-  "url": "http://localhost:3000"
+  "description": "API for managing announcements, users, and transactions for 'THE NICHE' online closet.",
+  "title": "Vide Dressing API",
+  "url": "https://example.com/api",
+  "header": {
+    "content-type": "application/json"
+  },
+  "sampleUrl": false,
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  },
+  "order": [
+    "Utilisateurs",
+    "Authentification",
+    "Annonces",
+    "Transactions"
+  ],
+  "groups": {
+    "Utilisateurs": "Endpoints for managing users.",
+    "Authentification": "User authentication endpoints.",
+    "Annonces": "Endpoints for managing announcements.",
+    "Transactions": "Endpoints for managing transactions."
+  },
+  "apidoc": {
+    "name": "VideDressingAPI",
+    "version": "1.0.0"
+  },
+  "examples": {
+    "curl": [
+      {
+        "title": "Get all users",
+        "content": "curl -X GET https://example.com/api/utilisateurs"
+      },
+      {
+        "title": "Create a new announcement",
+        "content": "curl -X POST -H 'Content-Type: application/json' -d '{\"titre\":\"New Announcement\",\"description\":\"Description\",\"prix\":100,\"categorie\":\"Chaussures\",\"latitude\":40.7128,\"longitude\":-74.0060}' https://example.com/api/annonces"
+      }
+    ]
+  },
+  "filename": "apidoc.json"
 }
