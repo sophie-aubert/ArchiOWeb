@@ -253,7 +253,6 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
  *
  * @apiHeader {String} Authorization User's authorization token.
  *
- * @apiParam {String} id Annonce's unique ID.
  * @apiParam {String} [titre] New title for the annonce.
  * @apiParam {String} [description] New description for the annonce.
  * @apiParam {Number} [prix] New price for the annonce.
