@@ -172,6 +172,7 @@ router.get("/mesAnnonces/:id", authMiddleware, async (req, res) => {
  *     https://thenicheapp.onrender.com/annonces
  *
  *
+ *
  * @apiHeader {String} Authorization User's authorization token.
  *
  *
