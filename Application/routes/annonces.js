@@ -9,10 +9,30 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// ROUTE POUR RECUPERER TOUTES LES ANNONCES
+// ROUTE POUR RECUPERER TOUTES LES ANNONCES AVEC FILTRES FACULTATIFS ET PAGINATION
 router.get("/", async (req, res) => {
   try {
-    const annonces = await Annonce.find();
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+
+    let query = {};
+
+    if (req.query.categorie) {
+      query.categorie = req.query.categorie;
+    }
+
+    if (req.query.prixMin) {
+      query.prix = { $gte: req.query.prixMin };
+    }
+
+    if (req.query.prixMax) {
+      query.prix = { ...query.prix, $lte: req.query.prixMax };
+    }
+
+    const annonces = await Annonce.find(query)
+      .skip((page - 1) * limit)
+      .limit(limit);
+
     res.json(annonces);
   } catch (error) {
     res.status(500).json({ message: error.message });
