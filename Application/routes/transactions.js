@@ -151,7 +151,7 @@ router.post("/", async (req, res) => {
  * @apiPermission user, admin
  *
  *  * @apiExample Example :
- *   https://thenicheapp.onrender.com/transactions/mesTransactions/6564b0e57c0295946eb9c7a8
+ *   https://thenicheapp.onrender.com/transactions/mesTransactions/656767a3812f486515225dd8
  *
  *
  * @apiParam {String} id User ID.

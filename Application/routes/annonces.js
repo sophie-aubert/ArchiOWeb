@@ -249,7 +249,7 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
  * @apiGroup Annonces
  *
  * @apiExample Example :
- *     https://thenicheapp.onrender.com/annonces/65676815812f486515225ddc
+ *     https://thenicheapp.onrender.com/annonces/656767a3812f486515225dd8
  *
  * @apiHeader {String} Authorization User's authorization token.
  *
@@ -306,7 +306,7 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
  * @apiGroup Annonces
  *
  * @apiExample Example :
- *     https://thenicheapp.onrender.com/annonces/65676815812f486515225ddc
+ *     https://thenicheapp.onrender.com/annonces/656767a3812f486515225dd8
  *
  * @apiHeader {String} Authorization User's authorization token.
  *
