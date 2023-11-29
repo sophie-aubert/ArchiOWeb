@@ -168,10 +168,12 @@ router.get("/mesAnnonces/:id", authMiddleware, async (req, res) => {
  * @apiName CreateAnnonce
  * @apiGroup Annonces
  *
+ * @apiExample Example :
+ *     https://thenicheapp.onrender.com/annonces
+ *
+ *
  * @apiHeader {String} Authorization User's authorization token.
  *
- * @apiExample Example :
- *    https://thenicheapp.onrender.com/annonces/
  *
  * @apiParam {String} titre Title of the annonce.
  * @apiParam {String} description Description of the annonce.
