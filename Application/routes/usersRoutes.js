@@ -4,6 +4,7 @@ import Annonce from "../models/annonceModel.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -111,12 +112,23 @@ router.get("/:id/nombre-annonces", async (req, res) => {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
     }
 
-    // Comptez le nombre d'annonces pour cet utilisateur
-    const nombreAnnonces = await Annonce.countDocuments({
-      utilisateur: userId,
-    });
+    // Comptez le nombre d'annonces pour cet utilisateur en utilisant un pipeline d'agrégation
+    const pipeline = [
+      {
+        $match: {
+          utilisateur: mongoose.Types.ObjectId.createFromHexString(userId),
+        },
+      },
+      { $group: { _id: null, nombreAnnonces: { $sum: 1 } } },
+    ];
 
-    res.status(200).json({ userId, nombreAnnonces });
+    const result = await Annonce.aggregate(pipeline);
+
+    // Renvoyer le résultat
+    res.status(200).json({
+      userId,
+      nombreAnnonces: result.length > 0 ? result[0].nombreAnnonces : 0,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
