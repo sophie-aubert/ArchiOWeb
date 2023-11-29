@@ -184,16 +184,18 @@ router.post("/", async (req, res) => {
  */
 
 // Afficher les transactions d'un utilisateur mais seulement si l'utilisateur est vendeur ou acheteur
-router.get("/mesTransactions/:id", authMiddleware, async (req, res) => {
+router.get("/mesTransactions", authMiddleware, async (req, res) => {
   try {
     const transactions = await Transaction.find({
-      $or: [{ acheteur: req.params.id }, { vendeur: req.params.id }],
-    }).populate("annonce acheteur");
+      $or: [{ acheteur: req.user._id }, { vendeur: req.user._id }],
+    }).populate("annonce acheteur vendeur");
 
     res.json(transactions);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
+
 
 export default router;
