@@ -187,8 +187,8 @@ router.post("/", async (req, res) => {
 router.get("/mesTransactions/:id", authMiddleware, async (req, res) => {
   try {
     const transactions = await Transaction.find({
-      $or: [{ acheteur: req.user._id }, { vendeur: req.user._id }],
-    }).populate("annonce acheteur vendeur");
+      $or: [{ acheteur: req.params.id }, { vendeur: req.params.id }],
+    }).populate("annonce acheteur");
 
     res.json(transactions);
   } catch (error) {
