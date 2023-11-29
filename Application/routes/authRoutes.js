@@ -12,7 +12,7 @@ const router = express.Router();
  * @apiName RegisterUser
  * @apiGroup Authentification
  *
- *  * @apiExample Example :
+ *  @apiExample Example :
  *    https://thenicheapp.onrender.com/auth/inscription
  *
  * @apiParam {String} username User's username.
@@ -72,11 +72,14 @@ router.post("/inscription", async (req, res) => {
 
 // ROUTE CONNEXION
 /**
- * @api {post} /utilisateurs/login Authentifier et connecter un utilisateur
+ * @api {post} /auth/login Authentifier et connecter un utilisateur
  * @apiGroup Authentification
  *
  * @apiParam {String} email User's email address.
  * @apiParam {String} password User's password.
+ *
+ * @apiExample Example :
+ *    https://thenicheapp.onrender.com/auth/login
  *
  * @apiSuccess {String} token Authentication token.
  *
