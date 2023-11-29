@@ -77,7 +77,7 @@ router.get("/", async (req, res) => {
  * @apiGroup Annonces
  *
  * @apiExample Example :
- *     https://thenicheapp.onrender.com/annonces/656610f02a1a2ca907e7a2a5
+ *     https://thenicheapp.onrender.com/annonces
  *
  * @apiParam {String} id Annonce's unique ID.
  *
