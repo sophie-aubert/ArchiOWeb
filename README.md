@@ -6,7 +6,7 @@ THEME DE TRAVAIL : Application "Vide Dressing Suisse"
 NOM : "The Niche"
 ********************************************************************************
 
-LIENS DOCUMUTATION : 
+LIENS DOCUMENTATION : 
 https://the-niche-documentation.netlify.app/
 
 LIENS RENDER :
