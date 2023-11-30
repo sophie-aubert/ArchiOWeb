@@ -7,7 +7,7 @@ NOM : "The Niche"
 ********************************************************************************
 
 LIENS DOCUMUTATION : 
-the-niche-documentation.netlify.app
+https://the-niche-documentation.netlify.app/
 
 LIENS RENDER :
 https://thenicheapp.onrender.com/
