@@ -233,8 +233,8 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
     const savedAnnonce = await newAnnonce.save();
 
     broadcastMessage("new_announcement", savedAnnonce);
-    broadcastMessage("illustrative_message", {
-      message: "This is an illustrative message.",
+    broadcastMessage("Message", {
+      message: "Une nouvelle annonce a été postée",
     });
 
     res.status(201).json(savedAnnonce);
