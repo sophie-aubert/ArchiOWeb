@@ -129,4 +129,39 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// ROUTE DECONNEXION
+/**
+ * @api {post} /auth/logout Déconnecter un utilisateur
+ * @apiGroup Authentification
+ * @apiPermission user, admin
+ *
+ * @apiExample Example :
+ *    https://thenicheapp.onrender.com/auth/logout
+ *
+ * @apiSuccess {String} message Logout success message.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "Vous êtes déconnecté"
+ *     }
+ */
+router.post("/logout", (req, res) => {
+  try {
+    // Vous pouvez également ajouter des vérifications supplémentaires ici,
+    // par exemple, vérifier si le token est présent dans la requête.
+
+    // Effacer le token côté client (par exemple, avec des cookies ou en utilisant
+    // l'en-tête Authorization)
+    // Exemple pour les cookies :
+    res.clearCookie("token");
+
+    // Réponse réussie
+    res.status(200).json({ message: "Déconnexion réussie" });
+  } catch (error) {
+    console.error("Erreur :", error);
+    res.status(500).json({ message: "Erreur lors de la déconnexion" });
+  }
+});
+
 export default router;
