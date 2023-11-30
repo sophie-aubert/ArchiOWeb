@@ -11,8 +11,6 @@ const router = express.Router();
  * @api {post} /auth/inscription Enregistrer un nouvel utilisateur
  * @apiName RegisterUser
  * @apiGroup Authentification
- * @apiPermission user, admin
-
  *
  *  @apiExample Example :
  *    https://thenicheapp.onrender.com/auth/inscription

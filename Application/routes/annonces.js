@@ -20,8 +20,6 @@ const upload = multer({ storage: storage });
  * @apiParam {Number} [page=1] Page number for pagination.
  * @apiParam {Number} [limit=10] Number of items per page.
  * @apiParam {String} [categorie] Filter by category.
- * @apiParam {Number} [prixMin] Filter by minimum price.
- * @apiParam {Number} [prixMax] Filter by maximum price.
  *
  * @apiSuccess {Object[]} annonces List of annonces.
  * @apiSuccess {String} annonces.titre Title of the annonce.
