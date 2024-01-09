@@ -8,6 +8,13 @@ import transactions from "./routes/transactions.js";
 import { createWebSocketServer } from "./utils/messaging.js";
 import http from "http";
 
+//////////////////////////
+// POUR LE FRONT-END
+//////////////////////////
+var app = express();
+app.use(cors());
+//////////////////////////
+
 dotenv.config();
 
 const app = express();
@@ -31,8 +38,6 @@ app.use("/annonces", annonces);
 app.use("/transactions", transactions);
 /////////////////////////////////////////////////////////////////////////
 
-
-
 // BASE DE DONNEE
 mongoose
   .connect(process.env.DATABASE_URL, {
@@ -41,8 +46,6 @@ mongoose
   })
   .then(() => {
     console.log("Connexion à MongoDB établie avec succès");
-
-
   })
   .catch((err) => {
     console.error("Erreur de connexion à MongoDB : " + err);
