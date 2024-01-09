@@ -7,17 +7,13 @@ import annonces from "./routes/annonces.js";
 import transactions from "./routes/transactions.js";
 import { createWebSocketServer } from "./utils/messaging.js";
 import http from "http";
-
-//////////////////////////
-// POUR LE FRONT-END
-//////////////////////////
-var app = express();
-app.use(cors());
-//////////////////////////
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
+
 const port = process.env.PORT || 3000;
 
 // Middleware pour permettre la gestion des données au format JSON
