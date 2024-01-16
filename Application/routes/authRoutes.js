@@ -121,9 +121,23 @@ router.post("/login", async (req, res) => {
       }
     );
 
-    res.json({ token });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    //   res.json({ token });
+    // } catch (err) {
+    //   res.status(500).json({ message: err.message });
+    // }
+
+    // retourne tableau avec donnée de l'utilisateur
+    const userInfos = {
+      username: user.username,
+      email: user.email,
+      id: user._id,
+      role: user.role,
+    };
+
+    res.status(200).json({ token, userInfos });
+  } catch (error) {
+    console.error("Erreur :", error);
+    res.status(500).json({ message: error.message });
   }
 });
 
