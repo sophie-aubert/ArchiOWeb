@@ -35,21 +35,21 @@ const annonceSchema = new mongoose.Schema(
       required: true,
       enum: categorieEnum,
     },
-    // geolocation: {
-    //   type: {
-    //     type: String,
-    //     default: "Point",
-    //   },
-    //   coordinates: {
-    //     type: [Number],
-    //     required: true,
-    //     validate: {
-    //       validator: validateGeoJsonCoordinates,
-    //       message:
-    //         "{VALUE} is not a valid longitude/latitude(/altitude) coordinates array",
-    //     },
-    //   },
-    // },
+    geolocation: {
+      type: {
+        type: String,
+        default: "Point",
+      },
+      coordinates: {
+        type: [Number],
+        required: true,
+        validate: {
+          validator: validateGeoJsonCoordinates,
+          message:
+            "{VALUE} is not a valid longitude/latitude(/altitude) coordinates array",
+        },
+      },
+    },
     image: {
       type: Buffer,
       required: false,
