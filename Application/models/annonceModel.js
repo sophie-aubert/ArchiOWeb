@@ -50,8 +50,9 @@ const annonceSchema = new mongoose.Schema(
         },
       },
     },
+
     image: {
-      type: Buffer,
+      type: String,
       required: false,
     },
 
