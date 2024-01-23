@@ -37,8 +37,19 @@ router.post("/inscription", async (req, res) => {
   try {
     console.log("Requête reçue avec le corps :", req.body);
 
-    const { username, email, password } = req.body;
-    console.log("Valeurs extraites :", username, email, password);
+    const { nom, prenom, username, email, password, ville, adresse, npa } =
+      req.body;
+    console.log(
+      "Valeurs extraites :",
+      nom,
+      prenom,
+      username,
+      email,
+      password,
+      ville,
+      adresse,
+      npa
+    );
 
     const existingUser = await Utilisateur.findOne({ username });
     if (existingUser) {
@@ -48,9 +59,14 @@ router.post("/inscription", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const nouvelUtilisateur = new Utilisateur({
+      nom,
+      prenom,
       username,
       email,
       password: hashedPassword,
+      ville,
+      adresse,
+      npa,
     });
 
     await nouvelUtilisateur.save();
@@ -114,7 +130,18 @@ router.post("/login", async (req, res) => {
     }
     // TOKEN DE LOGIN
     const token = jwt.sign(
-      { user: { id: user._id, role: user.role } },
+      {
+        user: {
+          id: user._id,
+          role: user.role,
+          nom: user.nom,
+          prenom: user.prenom,
+          username: user.username,
+          ville: user.ville,
+          adresse: user.adresse,
+          npa: user.npa,
+        },
+      },
       process.env.JWT_SECRET,
       {
         expiresIn: "1h",
@@ -128,10 +155,15 @@ router.post("/login", async (req, res) => {
 
     // retourne tableau avec donnée de l'utilisateur
     const userInfos = {
-      username: user.username,
-      email: user.email,
       id: user._id,
       role: user.role,
+      nom: user.nom,
+      prenom: user.prenom,
+      username: user.username,
+      email: user.email,
+      ville: user.ville,
+      adresse: user.adresse,
+      npa: user.npa,
     };
 
     res.status(200).json({ token, userInfos });

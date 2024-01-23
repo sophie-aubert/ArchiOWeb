@@ -2,6 +2,16 @@ import mongoose from "mongoose";
 
 const utilisateurSchema = new mongoose.Schema(
   {
+    nom: {
+      type: String,
+      required: true,
+    },
+
+    prenom: {
+      type: String,
+      required: true,
+    },
+
     username: {
       type: String,
       required: true,
@@ -17,6 +27,22 @@ const utilisateurSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    ville: {
+      type: String,
+      required: true,
+    },
+
+    adresse: {
+      type: String,
+      required: true,
+    },
+
+    npa: {
+      type: Number,
+      required: true,
+    },
+
     role: {
       type: String,
       enum: ["user", "admin"],
