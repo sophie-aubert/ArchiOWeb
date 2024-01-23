@@ -42,7 +42,7 @@ const annonceSchema = new mongoose.Schema(
       },
       coordinates: {
         type: [Number],
-        required: true,
+        required: false,
         validate: {
           validator: validateGeoJsonCoordinates,
           message:
