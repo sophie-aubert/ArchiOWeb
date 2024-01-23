@@ -206,7 +206,9 @@ router.get("/mesAnnonces/:id", authMiddleware, async (req, res) => {
  *       "message": "Invalid input data"
  *     }
  */
-router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
+//router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
+
+router.post("/", authMiddleware, async (req, res) => {
   try {
     const {
       titre,
@@ -217,6 +219,7 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
       longitude,
       status,
       localisation,
+      image,
     } = req.body;
 
     // Accédez à l'ID de l'utilisateur à partir du token dans le middleware d'authentification
@@ -234,11 +237,12 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
       },
       status,
       localisation,
+      image,
     });
 
-    if (req.file) {
-      newAnnonce.image = req.file.buffer;
-    }
+    // if (req.file) {
+    //   newAnnonce.image = req.file.buffer;
+    // }
 
     const savedAnnonce = await newAnnonce.save();
 
