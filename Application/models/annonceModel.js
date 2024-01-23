@@ -54,7 +54,19 @@ const annonceSchema = new mongoose.Schema(
       type: Buffer,
       required: false,
     },
+
+    status: {
+      type: String,
+      enum: ["En ligne", "Acheté", "Vendu"],
+      default: "En ligne",
+    },
+
+    localisation: {
+      type: String,
+      required: true,
+    },
   },
+
   { timestamps: true }
 );
 

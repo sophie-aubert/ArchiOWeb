@@ -208,8 +208,16 @@ router.get("/mesAnnonces/:id", authMiddleware, async (req, res) => {
  */
 router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
   try {
-    const { titre, description, prix, categorie, latitude, longitude } =
-      req.body;
+    const {
+      titre,
+      description,
+      prix,
+      categorie,
+      latitude,
+      longitude,
+      status,
+      localisation,
+    } = req.body;
 
     // Accédez à l'ID de l'utilisateur à partir du token dans le middleware d'authentification
     const utilisateur = req.user.id;
@@ -224,6 +232,8 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
         type: "Point",
         coordinates: [longitude, latitude],
       },
+      status,
+      localisation,
     });
 
     if (req.file) {
