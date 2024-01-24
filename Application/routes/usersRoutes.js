@@ -145,14 +145,24 @@ router.put("/:id", authMiddleware, async (req, res) => {
 
     if (req.user.isAdmin || userId === requestingUserId) {
       let updateFields = {};
-      const { username, email, password } = req.body;
+      const { nom, prenom, username, email, password, ville, adresse, npa } =
+        req.body;
 
       // Ne mettez à jour le mot de passe que s'il est fourni
       if (password) {
         const hashedPassword = await bcrypt.hash(password, 10);
-        updateFields = { username, email, password: hashedPassword };
+        updateFields = {
+          nom,
+          prenom,
+          username,
+          email,
+          password: hashedPassword,
+          ville,
+          adresse,
+          npa,
+        };
       } else {
-        updateFields = { username, email };
+        updateFields = { nom, prenom, username, email, ville, adresse, npa };
       }
 
       const updatedUser = await Utilisateur.findByIdAndUpdate(
