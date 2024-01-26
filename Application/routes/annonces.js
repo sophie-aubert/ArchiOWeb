@@ -299,7 +299,7 @@ router.post("/", authMiddleware, async (req, res) => {
 router.put("/:id", authAnnonceMiddleware, async (req, res) => {
   try {
     const annonceId = req.params.id;
-    const { titre, description, prix, imageUrl } = req.body;
+    const { titre, description, prix, imageUrl, status } = req.body;
     const annonce = await Annonce.findById(annonceId);
     if (!annonce) {
       return res.status(404).json({ message: "Annonce non trouvée" });
@@ -308,6 +308,7 @@ router.put("/:id", authAnnonceMiddleware, async (req, res) => {
     annonce.description = description || annonce.description;
     annonce.prix = prix || annonce.prix;
     annonce.imageUrl = imageUrl || annonce.imageUrl;
+    annonce.status = status || annonce.status;
     const updatedAnnonce = await annonce.save();
     res.json(updatedAnnonce);
   } catch (err) {
